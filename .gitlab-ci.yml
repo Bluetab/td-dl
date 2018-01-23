@@ -5,7 +5,7 @@ stages:
 test:
   stage: test
   script:
-    - docker run --rm --entrypoint=/code/ci/test.sh bluetab/amazonlinux-python3-neo4j:20180123090408834578692
+    - docker run --rm -v $(pwd):/code:ro -w /code --entrypoint=/code/ci/test.sh bluetab/amazonlinux-python3-neo4j:20180123090408834578692
   artifacts:
     untracked: true
 
