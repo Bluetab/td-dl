@@ -3,34 +3,34 @@ from flasgger import Swagger
 from flask_cors import CORS
 
 
-template = {
-  "swagger": "2.0",
-  "info": {
-    "title": "Trazabilidad API",
-    "description": "API for neo4j traceability model",
-    "contact": {
-      "responsibleOrganization": "http://bluetab.net/",
-      "responsibleDeveloper": "Bluetab",
-      "email": "bluetab@bluetab.net",
-      "url": "http://bluetab.net/",
+TEMPLATE = {
+    "swagger": "2.0",
+    "info": {
+        "title": "Trazabilidad API",
+        "description": "API for neo4j traceability model",
+        "contact": {
+            "responsibleOrganization": "http://bluetab.net/",
+            "responsibleDeveloper": "Bluetab",
+            "email": "bluetab@bluetab.net",
+            "url": "http://bluetab.net/",
+            },
+        "termsOfService": "http://bluetab.net/",
+        "version": "0.0.1"
     },
-    "termsOfService": "http://bluetab.net/",
-    "version": "0.0.1"
-  },
-  "host": "localhost:5000",
-  "basePath": "/",
-  "schemes": [
-    [
-      "http",
-      "https"
-    ]
-  ],
-  "operationId": "getmyData"
+    "host": "localhost:5000",
+    "basePath": "/",
+    "schemes": [
+        [
+            "http",
+            "https"
+        ]
+    ],
+    "operationId": "getmyData"
 }
 
 app = Flask(__name__)
 CORS(app)
-Swagger(app, template=template)
+Swagger(app, template=TEMPLATE)
 
 from api.v1.group import group
 from api.v1.resource import resource
