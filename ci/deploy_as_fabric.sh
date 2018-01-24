@@ -19,6 +19,8 @@ pip install -r /working_code/requirements.txt
 
 ./add_deployment_keys.sh || exit 1
 
+./create_sectret_configuration.sh || exit 1
+
 if [ -z "$SSH_AUTH_SOCK"]; then
   eval `ssh-agent -s`
   ssh-add ~/.ssh/lineage.pem
