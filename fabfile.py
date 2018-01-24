@@ -28,7 +28,7 @@ def deploy():
     run('rm -r /tmp/%s' % filename)
 
     # remove the uploaded package
-    run('nohup sh -c "/home/ec2-user/data-lineage/venv/bin/gunicorn --bind 0.0.0.0:5000 api:app" > /home/ec2-user/data-lineage/data-lineage.log 2>&1')
+    run('nohup sh -c "/home/ec2-user/data-lineage/venv/bin/gunicorn --bind 0.0.0.0:5000 api:app" > /home/ec2-user/data-lineage/data-lineage.log 2>&1&')
 
     # touch the .wsgi file to trigger a reload in mod_wsgi
     #run('touch /home/ec2-user/data-lineage.wsgi')
