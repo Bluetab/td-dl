@@ -28,9 +28,8 @@ def deploy():
     run('rm -r /tmp/%s' % filename)
 
     # restart lineage service
+    run("sudo initctl stop lineage")
     run('touch /home/ec2-user/data-lineage/wsgi.py && \
          rm /home/ec2-user/data-lineage/wsgi.py')
-
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")
-
     run("sudo initctl start lineage")
