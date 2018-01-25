@@ -33,4 +33,4 @@ def deploy():
 
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")
 
-    run("initctl stop lineage && initctl start lineage")
+    run("sudo initctl stop lineage && sudo initctl start lineage")
