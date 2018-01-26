@@ -29,7 +29,7 @@ def deploy():
 
     # restart lineage service
     run("sudo initctl stop lineage")
-    run ("python -c \"from api.settings.db import db;db.create_all()\"")
+    run ("/home/ec2-user/data-lineage/venv/bin/python -c \"from api.settings.db import db;db.create_all()\"")
     run('touch /home/ec2-user/data-lineage/wsgi.py && \
          rm /home/ec2-user/data-lineage/wsgi.py')
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")
