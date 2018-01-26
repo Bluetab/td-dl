@@ -1,7 +1,7 @@
 from api.common.utils import findIndexInList
 from api.common.query import (queryGroupDependenciesFilter, queryResourceDependenciesFilter,
 queryGetResource, queryResourceDependenciesNodesFilter, queryDependsWorkflow, queryGetGroupsFromResource)
-from api.settings.db import get_db
+from api.settings.db import get_neo4j_db
 import json
 
 def parseBoltNodes(node):

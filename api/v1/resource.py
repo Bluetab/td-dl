@@ -5,7 +5,7 @@ from api.common.parser import parseBoltRecords, parseWorkflowDependencies
 from api.common.query import (queryMatchNode, queryGetNode, buildNodeFilterEqual,
                               queryResourceDependencies, getUuidsFromNodes)
 from api.common.utils import make_error, checkparams, checkonlyone
-from api.settings.db import get_db
+from api.settings.db import get_neo4j_db
 
 
 resource = Blueprint('resource', __name__)
@@ -39,7 +39,7 @@ def index():
     filters = ""
     if request.args:
         filters = buildNodeFilterEqual(request.args.items())
-    with get_db() as session:
+    with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
                                                          "Recurso",
                                                          filters))
@@ -78,7 +78,7 @@ def show(id):
               description: The Resourcesname
               default: "The awesomeness name"
     """
-    with get_db() as session:
+    with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
                                                          "Recurso",
                                                          id))
@@ -121,7 +121,7 @@ def deps(id):
               description: List of Resources
               default: [1, 4, 48]
     """
-    with get_db() as session:
+    with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
                                                          "Recurso",
                                                          id))[0]
@@ -135,7 +135,7 @@ def workflowsFromResource():
     if error:
         return make_error(400, error)
 
-    with get_db() as session:
+    with get_neo4j_db() as session:
         ids = session.write_transaction(getUuidsFromNodes, ("struct_id", request.json[param]))
         paths = parseWorkflowDependencies(ids, session)
         return jsonify(paths), 200
@@ -149,7 +149,7 @@ def verifyResourceExistance():
 
     filters="WHERE n.struct_id='{}'".format(resource)
 
-    with get_db() as session:
+    with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
                                                          "Recurso",
                                                          filters))
