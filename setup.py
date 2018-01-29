@@ -8,7 +8,7 @@ setup(
     author_email='bluetab@bluetab.net',
     license = 'Apache2 License',
     keywords = ['data-lineage', 'api', 'neo4j'],
-    packages=['api', 'api.v1', 'api.common', 'api.settings'],
+    packages=['api', 'api.v1', 'api.common', 'api.settings', 'api.models'],
     include_package_data=True,
     install_requires=[
         'astroid==1.6.0',
