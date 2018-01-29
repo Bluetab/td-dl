@@ -18,7 +18,7 @@ def deploy():
     put('dist/%s' % filename, '/tmp/%s' % filename)
 
     # upload env
-    #run("sudo initctl stop lineage")
+    run("sudo initctl stop lineage")
     run('sudo rm -rf /home/ec2-user/data-lineage/venv')
     run('virtualenv -p python3 /home/ec2-user/data-lineage/venv')
 
