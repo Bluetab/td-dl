@@ -18,6 +18,7 @@ def deploy():
     put('dist/%s' % filename, '/tmp/%s' % filename)
 
     # upload env
+    run("sudo initctl stop lineage")
     run('sudo rm -rf /home/ec2-user/data-lineage/venv')
     run('virtualenv -p python3 /home/ec2-user/data-lineage/venv')
 
@@ -28,7 +29,6 @@ def deploy():
     run('rm -r /tmp/%s' % filename)
 
     # restart lineage service
-    run("sudo initctl stop lineage")
     run ("/home/ec2-user/data-lineage/venv/bin/python -c \"from api.settings.db import db;db.create_all()\"")
     run('touch /home/ec2-user/data-lineage/wsgi.py && \
          rm /home/ec2-user/data-lineage/wsgi.py')
