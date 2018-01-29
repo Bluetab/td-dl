@@ -1,4 +1,8 @@
+from pip.req import parse_requirements
 from setuptools import setup
+
+install_reqs = parse_requirements('./requirements.txt', session='hack')
+reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='data-lineage',
@@ -10,28 +14,5 @@ setup(
     keywords = ['data-lineage', 'api', 'neo4j'],
     packages=['api', 'api.v1', 'api.common', 'api.settings', 'api.models'],
     include_package_data=True,
-    install_requires=[
-        'astroid==1.6.0',
-        'click==6.7',
-        'coverage==4.4.2',
-        'gunicorn==19.7.1',
-        'flasgger==0.6.3',
-        'Flask==0.12.2',
-        'Flask-Cors==3.0.2',
-        'isort==4.2.15',
-        'itsdangerous==0.24',
-        'Jinja2==2.9.6',
-        'jsonschema==2.6.0',
-        'lazy-object-proxy==1.3.1',
-        'MarkupSafe==1.0',
-        'mccabe==0.6.1',
-        'mistune==0.7.4',
-        'neo4j-driver==1.3.0',
-        'nose2==0.7.3',
-        'PyYAML==3.12',
-        'six==1.11.0',
-        'tornado==4.5.2',
-        'Werkzeug==0.12.2',
-        'wrapt==1.10.11',
-    ],
+    install_requires=[reqs],
 )
