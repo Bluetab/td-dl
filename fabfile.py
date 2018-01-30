@@ -1,13 +1,15 @@
-from fabric.api import *
+from fabric.api import (local, put, run, env)
 
 # the user to use for the remote commands
 env.user = 'ec2-user'
 # the servers where the commands are executed
 env.hosts = ['52.214.3.82']
 
+
 def pack():
     # build the package
     local('python setup.py sdist --formats=gztar', capture=False)
+
 
 def deploy():
     # figure out the package name and version
@@ -29,7 +31,6 @@ def deploy():
     run('rm -r /tmp/%s' % filename)
 
     # restart lineage service
-    run ("/home/ec2-user/data-lineage/venv/bin/python -c \"from api.settings.db import db;db.create_all()\"")
     run('touch /home/ec2-user/data-lineage/wsgi.py && \
          rm /home/ec2-user/data-lineage/wsgi.py')
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")

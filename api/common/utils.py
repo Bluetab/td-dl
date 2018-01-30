@@ -15,13 +15,15 @@ def make_error(status_code, message):
     response.status_code = status_code
     return response
 
+
 def checkparams(params, request):
     if not request.json:
         return "Error body json not found"
     for param in params:
-        if not param in request.json:
+        if param not in request.json:
             return "Error {} not found".format(param)
     return False
+
 
 def checkonlyone(params, request):
     if not request.json:
@@ -31,10 +33,12 @@ def checkonlyone(params, request):
         if param in request.json:
             total.append(param)
     if len(total) > 1:
-        return "Error, multiple params founds: {}. You can use only one".format(",".join(total)), None
+        return "Error, multiple params founds: {}. \
+                You can use only one".format(",".join(total)), None
     if len(total) == 0:
         return "Error, params {} not founds".format(" or ".join(params)), None
     return False, total[0]
+
 
 def findInArgs(default, args):
     arg = ""
