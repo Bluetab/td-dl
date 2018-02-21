@@ -9,7 +9,7 @@ ALLOWED_EXTENSIONS = set(['csv', 'zip'])
 
 app.config['SECRET_KEY'] = 'SuperSecretTruedat'
 app.config['AUTH_SERVICE_URI'] = "http://127.0.0.1:4000/api/sessions"
-app.config['JWT_AUD'] = "trueBG"
+app.config['JWT_AUD'] = "tdauth"
 app.config['UPLOAD_FOLDER'] = app.root_path + UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
 

@@ -3,12 +3,12 @@ from api.common.parser import parseBoltPathsFlat, parseBoltPathsTree
 from api.common.query import queryPath, getUuidsFromNodes
 from api.common.utils import make_error, checkparams, checkonlyone
 from api.settings.db import get_neo4j_db
-
+from api.settings.auth import auth
 
 path = Blueprint('path', __name__)
 
-
 @path.route('/path', methods=['POST'])
+@auth.login_required
 def index():
     print request
     error, param = checkonlyone(["uuids", "titles"], request)
@@ -36,6 +36,7 @@ def index():
 
 
 @path.route('/path/levels', methods=['POST'])
+@auth.login_required
 def levelsFromPath():
     error, param = checkonlyone(["struct_id"], request)
     if error:

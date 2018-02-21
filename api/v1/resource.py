@@ -5,12 +5,13 @@ from api.common.query import (queryMatchNode, queryGetNode,
                               getUuidsFromNodes)
 from api.common.utils import make_error, checkonlyone
 from api.settings.db import get_neo4j_db
-
+from api.settings.auth import auth
 
 resource = Blueprint('resource', __name__)
 
 
 @resource.route('/resources', methods=['GET'])
+@auth.login_required
 def index():
     filters = ""
     if request.args:
@@ -23,6 +24,7 @@ def index():
 
 
 @resource.route('/resources/<int:id>', methods=['GET'])
+@auth.login_required
 def show(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
@@ -32,6 +34,7 @@ def show(id):
 
 
 @resource.route('/resources/<int:id>/depends', methods=['GET'])
+@auth.login_required
 def deps(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
@@ -43,6 +46,7 @@ def deps(id):
 
 
 @resource.route('/resources/workflows/depends', methods=['POST'])
+@auth.login_required
 def workflowsFromResource():
     error, param = checkonlyone(["struct_id"], request)
     if error:
@@ -56,6 +60,7 @@ def workflowsFromResource():
 
 
 @resource.route('/resources/exists', methods=['GET'])
+@auth.login_required
 def verifyResourceExistance():
     resource = request.args.get('resource')
 

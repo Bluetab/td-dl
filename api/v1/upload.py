@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
+from api.settings.auth import auth
 from api.app import app
 import subprocess
 import os
@@ -10,7 +11,7 @@ UPLOAD_FOLDER = app.config['UPLOAD_FOLDER']
 ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
 
 @upload.route('/upload', methods=['POST'])
-#@auth.login_required
+@auth.login_required
 def uploadFiles():
 
     list_filenames = []

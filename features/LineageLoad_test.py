@@ -8,6 +8,12 @@ MAP_RESPONSE = {201: 'Created'}
 @step('"(.*)" tries to load lineage data with following data:')
 def triesToLoad(step, username):
 
+    url="http://localhost:5000/api/lineage/sessions"
+    headers = {'content-type': 'application/json'}
+    data = {"user": {"user_name": "app-admin", "password": "mypass"}}
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+    world.token = r.json()['token']
+
     df_groups = pandas.DataFrame([])
     df_resources = pandas.DataFrame([])
     df_relations = pandas.DataFrame([])
@@ -41,7 +47,8 @@ def triesToLoad(step, username):
     files = [('nodes', open('GroupsPrueba.csv', 'rb')),
         ('nodes', open('ResourcesPrueba.csv', 'rb')),
         ('rels', open('RelationsPrueba.csv', 'rb'))]
-    r = requests.post(url, files=files)
+    headers = {'Authorization': 'Bearer ' + world.token }
+    r = requests.post(url, files=files, headers=headers)
     world.status_code = r.status_code
 
 @step(u'Then the system returns a result with code "([^"]*)"')
@@ -56,7 +63,7 @@ def and_group1_is_able_to_view_following_lineage_for_resource_with_id_group2_and
 
     url = 'http://localhost:5000/api/lineage/path'
     data = {"uuids":[resource['uuid']], "toplevel":groupType, "levels": -1}
-    headers = {'content-type': 'application/json'}
+    headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + world.token}
     r = requests.post(url, data=json.dumps(data), headers=headers)
     jsonData = r.json()
 
@@ -80,7 +87,8 @@ def findArrayJsonValues(object_json, findKey, findKeyFeatures):
 
 def callAPIResources():
     url = 'http://localhost:5000/api/lineage/resources'
-    r = requests.get(url)
+    headers = {'Authorization': 'Bearer ' + world.token}
+    r = requests.get(url, headers=headers)
 
     return r
 

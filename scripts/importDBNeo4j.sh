@@ -49,14 +49,18 @@ main(){
         sudo cp -R /var/lib/neo4j/data/databases/graph.db.bck /var/lib/neo4j/data/databases/graph.db
       fi
       sudo neo4j start
-      end="$((SECONDS+10))"
-      while true; do
-          [[ "200" = "$(curl --silent --write-out %{http_code} --output /dev/null http://localhost:7474)" ]] && break
-          [[ "${SECONDS}" -ge "${end}" ]] && exit 1
-          sleep 1
-      done
+
+      wait_for_neo4j
     fi
   fi
+}
+
+# wait for neo4j
+function wait_for_neo4j {
+  while ! nc -z localhost 7474; do
+    echo "Neo4j is unavailable - sleeping"
+    sleep 1
+  done
 }
 
 main
