@@ -4,3 +4,6 @@ venv/
 dist/
 *.egg*
 api/db.sqlite
+api/media
+build/
+import.report

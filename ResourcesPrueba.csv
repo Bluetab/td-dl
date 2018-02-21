@@ -1,0 +1,7 @@
+:LABEL;description;external_id:ID;name;type
+Resources;This is First calculated field;1;First Field;Field
+Resources;This is Second calculated field;2;Second Field;Field
+Resources;This is Third calculated field;3;Third Field;Field
+Resources;This is Fourth calculated field;4;Forth Field;Field
+Resources;This is the first transformation;11;First Transformation;Transformation
+Resources;This is the second transformation;12;Second Transformation;Transformation

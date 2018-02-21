@@ -34,17 +34,16 @@ def queryPath(tx, toplevel, ids, levels):
     else:
         format_levels = "*1..{levels}".format(levels=levels)
     query = """
-            MATCH p=(r:Recurso)<-[D:DEPENDE{levels}{{TARGET_ID:id(r)}}]-(n:Recurso)
-            WHERE id(r) in [{ids}] WITH DISTINCT NODES(p) AS RECURSOS UNWIND RECURSOS AS X
-            MATCH path=(:Grupo {{tipo: "{toplevel}"}})-[:AGRUPA*]->(X)
+            MATCH p=(r:Resources)-[D:DEPENDS{levels}]->(n:Resources)
+            WHERE id(r) in [{ids}] WITH DISTINCT NODES(p) AS RESOURCES UNWIND RESOURCES AS X
+            MATCH path=(:Groups {{type: "{toplevel}"}})-[:CONTAINS*]->(X)
             RETURN path as p
             UNION
-            MATCH path=(:Grupo {{tipo: "{toplevel}"}})-[:AGRUPA*]->(X)
+            MATCH path=(:Groups {{type: "{toplevel}"}})-[:CONTAINS*]->(X)
             WHERE id(X) in [{ids}]
             RETURN path as p
             """.format(levels=format_levels, ids=",".join(map(str, ids)),
                        toplevel=toplevel)
-    print(query)
     records = tx.run(query)
     return records
 
@@ -55,7 +54,7 @@ def queryPathLevels(tx, ids, levels):
     else:
         format_levels = "*1..{levels}".format(levels=levels)
     query = """
-            MATCH path=(r:Recurso)<-[:DEPENDE{levels}{{TARGET_ID:id(r)}}]-(n:Recurso)
+            MATCH path=(r:Recurso)<-[:DEPENDE{levels}]-(n:Recurso)
             WHERE id(r) in [{ids}] WITH collect(path) as paths
             CALL apoc.convert.toTree(paths) yield value
             RETURN value
@@ -96,11 +95,11 @@ def queryGroupDependencies(tx, group_id):
 
 def queryGroupDependenciesFilter(tx, ids, group_id, resource_ids):
     query = """
-            MATCH p1=(g_ini:Grupo)-[:AGRUPA*]->(r_ini:Recurso)
+            MATCH p1=(g_ini:Groups)-[:CONTAINS*]->(r_ini:Resources)
             WHERE id(g_ini) = {group_id} AND id(r_ini) in [{resource_ids}]
-            MATCH p2=(r_ini)-[d:DEPENDE]->(g:Recurso)
-            WHERE id(g) in [{resource_ids}] and d.TARGET_ID in [{ids}]
-            MATCH p3=(g)<-[:AGRUPA*]-(r:Grupo {{tipo: g_ini.tipo}})
+            MATCH p2=(r_ini)-[d:DEPENDS]->(g:Resources)
+            WHERE id(g) in [{resource_ids}]
+            MATCH p3=(g)<-[:CONTAINS*]-(r:Groups {{tipo: g_ini.tipo}})
             WHERE id(r) <> {group_id}
             RETURN distinct(id(r))
             """.format(group_id=group_id, resource_ids=",".join(map(str, resource_ids)), ids=",".join(map(str, ids)))
@@ -126,8 +125,8 @@ def queryResourceDependencies(tx, resource_id):
 
 def queryResourceDependenciesFilter(tx, ids, resource_id, resource_ids):
     query = """
-            MATCH p=(g_ini:Recurso)-[d:DEPENDE]->(r:Recurso)
-            WHERE id(g_ini) = {} AND id(r) in [{}] and d.TARGET_ID in [{ids}]
+            MATCH p=(g_ini:Resources)-[d:DEPENDS]->(r:Resources)
+            WHERE id(g_ini) = {} AND id(r) in [{}]
             RETURN distinct(id(r))
             """.format(resource_id, ",".join(map(str, resource_ids)), ids=",".join(map(str, ids)))
     records = tx.run(query)

@@ -21,6 +21,12 @@ setup(
         'nose2==0.7.3',
         'PyJWT==1.5.3',
         'requests==2.18.4',
-        'tornado==4.5.2'
+        'tornado==4.5.2',
+        'lettuce==0.2.23'
     ],
+    extras_require={
+        'dev': [
+            'pandas'
+        ]
+    }
 )

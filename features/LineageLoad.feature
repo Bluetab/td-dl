@@ -30,24 +30,25 @@ Feature: Load Data Lineage using API
       | Resources   | 12  | Second Transformation | Transformation | This is the second transformation  |          |           |           |
       | Groups      | 101 | First Group           | System         | Our first group in simple example  | True     |           |           |
       | Groups      | 102 | Second Group          | System         | Our second group in simple example | True     |           |           |
-      | Relations   |     |                       | Contains       |                                    |          | 101       | 1         |
-      | Relations   |     |                       | Contains       |                                    |          | 101       | 11        |
-      | Relations   |     |                       | Contains       |                                    |          | 102       | 2         |
-      | Relations   |     |                       | Contains       |                                    |          | 102       | 3         |
-      | Relations   |     |                       | Contains       |                                    |          | 102       | 4         |
-      | Relations   |     |                       | Contains       |                                    |          | 102       | 12        |
-      | Relations   |     |                       | Depends        |                                    |          | 3         | 12        |
-      | Relations   |     |                       | Depends        |                                    |          | 12        | 4         |
-      | Relations   |     |                       | Depends        |                                    |          | 12        | 2         |
-      | Relations   |     |                       | Depends        |                                    |          | 2         | 11        |
-      | Relations   |     |                       | Depends        |                                    |          | 11        | 1         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 101       | 1         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 101       | 11        |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 2         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 3         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 4         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 12        |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 3         | 12        |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 12        | 4         |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 12        | 2         |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 2         | 11        |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 11        | 1         |
     Then the system returns a result with code "Created"
-    And "app-admin" is able to view following lineage for Resource with Id "3"
+    And "app-admin" is able to view following lineage for Resource with Id "3" and top level Group type "System"
       | Id  | Name                  | Type           | Description                        | Contains | Depends |
       | 3   | Third Field           | Field          | This is Third calculated field     |          | 12      |
       | 12  | Second Transformation | Transformation | This is the second transformation  |          | 4,2     |
       | 4   | Forth Field           | Field          | This is Fourth calculated field    |          |         |
       | 2   | Second Field          | Field          | This is Second calculated field    |          | 11      |
-      | 11  | First Transformation  | Transformation | This is the second transformation  |          | 1       |
+      | 11  | First Transformation  | Transformation | This is the first transformation   |          | 1       |
+      | 1   | First Field           | Field          | This is First calculated field     |          |         |
       | 101 | First Group           | System         | Our first group in simple example  | 1,11     |         |
       | 102 | Second Group          | System         | Our second group in simple example | 2,3,4,12 | 101     |

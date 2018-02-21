@@ -24,11 +24,11 @@ def parseBoltRecords(records):
 
 
 def getDepsNodes(node, ids, resource_ids, session):
-    if "Grupo" in node["labels"]:
+    if "Groups" in node["labels"]:
         lista = session.write_transaction(queryGroupDependenciesFilter,
                                           ids, node["uuid"], resource_ids)
         node["depends"] = [x["(id(r))"] for x in lista.data()]
-    elif "Recurso" in node["labels"]:
+    elif "Resources" in node["labels"]:
         lista = session.write_transaction(queryResourceDependenciesFilter,
                                           ids, node["uuid"], resource_ids)
         node["depends"] = [x["(id(r))"] for x in lista.data()]
@@ -54,7 +54,7 @@ def parseBoltPathsFlat(records, ids, toplevel, session):
             deep += 1
     # Add dependencies
     resource_ids = list(map(lambda x: x["uuid"],
-                            filter(lambda x: "Recurso" in x["labels"], nodes)))
+                            filter(lambda x: "Resources" in x["labels"], nodes)))
     nodes = [getDepsNodes(x, ids, resource_ids, session) for x in nodes]
     return nodes
 
