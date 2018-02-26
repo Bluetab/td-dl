@@ -20,7 +20,6 @@ def deploy():
     put('dist/%s' % filename, '/tmp/%s' % filename)
 
     # upload env
-    run("sudo initctl stop lineage")
     run('sudo rm -rf /home/ec2-user/data-lineage/venv')
     run('virtualenv -p python3 /home/ec2-user/data-lineage/venv')
 
@@ -34,4 +33,7 @@ def deploy():
     run('touch /home/ec2-user/data-lineage/wsgi.py && \
          rm /home/ec2-user/data-lineage/wsgi.py')
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")
-    run("sudo initctl start lineage")
+    put("script/launchApp.sh", "/home/ec2-user/data-lineage/script/launchApp.sh")
+
+    run("./script/launchApp.sh stop")
+    run("./script/launchApp.sh start")

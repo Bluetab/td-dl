@@ -10,7 +10,6 @@ path = Blueprint('path', __name__)
 @path.route('/path', methods=['POST'])
 @auth.login_required
 def index():
-    print request
     error, param = checkonlyone(["uuids", "titles"], request)
     if error:
         return make_error(400, error)
