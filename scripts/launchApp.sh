@@ -8,7 +8,7 @@ main(){
   case "$OPTION" in
     (stop)
       stop
-      exit 1
+      exit 0
       ;;
     (start)
       start
@@ -19,7 +19,7 @@ main(){
       exit 0
       ;;
     (*)
-      echo "Usage: $SCRIPT {stop|start}"
+      echo "Usage: $SCRIPT {stop|start|status}"
       exit 2
       ;;
   esac
