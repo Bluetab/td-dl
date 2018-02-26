@@ -16,9 +16,9 @@ def uploadFiles():
 
     list_filenames = []
 
-    for type_file, list_file_request in request.files.iterlists():
-        if 'nodes' in type_file or 'rels' in type_file:
-            list_filenames.extend(checkFiles(list_file_request, type_file))
+    for key_type_file in request.files.keys():
+        if 'nodes' in key_type_file or 'rels' in key_type_file:
+            list_filenames.extend(checkFiles(request.files.getlist(key_type_file), key_type_file))
 
     # list_filenames = [checkFiles(list_file_request, type_file)
     #                   for type_file, list_file_request in request.files.iterlists()
