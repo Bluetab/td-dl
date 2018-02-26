@@ -33,7 +33,7 @@ def deploy():
     run('touch /home/ec2-user/data-lineage/wsgi.py && \
          rm /home/ec2-user/data-lineage/wsgi.py')
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")
-    put("script/launchApp.sh", "/home/ec2-user/data-lineage/script/launchApp.sh")
+    put("scripts/launchApp.sh", "/home/ec2-user/data-lineage/scripts/launchApp.sh")
 
-    run("./script/launchApp.sh stop")
-    run("./script/launchApp.sh start")
+    run("./scripts/launchApp.sh stop")
+    run("./scripts/launchApp.sh start")
