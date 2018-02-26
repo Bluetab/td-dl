@@ -36,5 +36,5 @@ def deploy():
     put("scripts/launchApp.sh", "/home/ec2-user/data-lineage/scripts/launchApp.sh")
     run("chmod 755 /home/ec2-user/data-lineage/scripts/launchApp.sh")
 
-    run("./scripts/launchApp.sh stop")
-    run("./scripts/launchApp.sh start")
+    run("/home/ec2-user/data-lineage/scripts/launchApp.sh stop")
+    run("/home/ec2-user/data-lineage/scripts/launchApp.sh start")
