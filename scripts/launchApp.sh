@@ -34,6 +34,7 @@ stop(){
 }
 
 start(){
+  source /home/ec2-user/data-lineage/venv/bin/activate
   exec gunicorn --workers 3 --bind unix:/home/ec2-user/data-lineage/lineage.sock wsgi --daemon
 }
 
