@@ -20,7 +20,7 @@ def index():
         filters = buildNodeFilterEqual(request.args.items())
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
-                                                           "Grupo",
+                                                           "Group",
                                                            filters))
         return jsonify(nodes), 200
 
@@ -30,7 +30,7 @@ def index():
 def show(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
-                                                           "Grupo",
+                                                           "Group",
                                                            id))
         return jsonify(nodes[0]), 200
 
@@ -40,7 +40,7 @@ def show(id):
 def deps(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
-                                                           "Grupo",
+                                                           "Group",
                                                            id))[0]
         lista = session.write_transaction(queryGroupDependencies, id)
         nodes["depends"] = [x["(id(r))"] for x in lista.data()]
@@ -52,7 +52,7 @@ def deps(id):
 def contains(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
-                                                           "Grupo",
+                                                           "Group",
                                                            id))[0]
         lista = session.write_transaction(queryGroupContains, id)
         nodes["contains"] = [x["(id(r))"] for x in lista.data()]
@@ -65,7 +65,7 @@ def typeGroups():
     nodes = {}
 
     with get_neo4j_db() as session:
-        lista = session.write_transaction(queryMatchType, "Grupo")
+        lista = session.write_transaction(queryMatchType, "Group")
         nodes["types"] = [x["tipo"] for x in lista.data()]
         return jsonify(nodes), 200
 

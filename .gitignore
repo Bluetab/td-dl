@@ -7,6 +7,6 @@ api/db.sqlite
 api/media
 build/
 import.report
-GroupsPrueba.csv
-RelationsPrueba.csv
-ResourcesPrueba.csv
+groups.csv
+relations.csv
+resources.csv

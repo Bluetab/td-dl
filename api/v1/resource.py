@@ -18,7 +18,7 @@ def index():
         filters = buildNodeFilterEqual(request.args.items())
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
-                                                           "Resources",
+                                                           "Resource",
                                                            filters))
         return jsonify(nodes), 200
 
@@ -28,7 +28,7 @@ def index():
 def show(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
-                                                           "Resources",
+                                                           "Resource",
                                                            id))
         return jsonify(nodes[0]), 200
 
@@ -38,7 +38,7 @@ def show(id):
 def deps(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
-                                                           "Resources",
+                                                           "Resource",
                                                            id))[0]
         lista = session.write_transaction(queryResourceDependencies, id)
         nodes["depends"] = [x["(id(r))"] for x in lista.data()]
@@ -71,7 +71,7 @@ def verifyResourceExistance():
 
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
-                                                           "Recurso",
+                                                           "Resource",
                                                            filters))
         if nodes:
             return jsonify({"exists": True})

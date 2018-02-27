@@ -22,7 +22,7 @@ setup(
         'PyJWT==1.5.3',
         'requests==2.18.4',
         'tornado==4.5.2',
-        'lettuce==0.2.23'
+        'behave==1.2.6'
     ],
     extras_require={
         'dev': [
