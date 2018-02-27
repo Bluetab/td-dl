@@ -65,7 +65,13 @@ function check_stop {
 
 # wait for neo4j
 function wait_for_neo4j {
-  while ! nc -z localhost 7474; do
+  while ! nc -z localhost 7687 ; do
+    echo "Neo4j is unavailable - sleeping"
+    sudo neo4j status
+    sleep 1
+  done
+
+  while ! nc -z localhost 7474 ; do
     echo "Neo4j is unavailable - sleeping"
     sudo neo4j status
     sleep 1

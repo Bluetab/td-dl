@@ -14,7 +14,7 @@ def createFilesAndUpload(context):
             df_temp = pandas.DataFrame(data={'external_id:ID': [row["Id"]], \
                 'name': [row["Name"]], 'type': [row["Type"]], \
                 'description': [row["Description"]], \
-                ':LABEL': ['Resources']})
+                ':LABEL': ['Resource']})
             df_resources = appendDataFrame(df_resources, df_temp)
 
         elif row["File"] == 'Groups':
@@ -22,7 +22,7 @@ def createFilesAndUpload(context):
                 'name': [row["Name"]], 'type': [row["Type"]], \
                 'description': [row["Description"]], \
                 'showtree': [row["Showtree"]], \
-                ':LABEL': ['Groups']})
+                ':LABEL': ['Group']})
             df_groups = appendDataFrame(df_groups, df_temp)
 
         elif row["File"] == 'Relations':
@@ -55,7 +55,7 @@ def findArrayJsonValues(token, object_json, findKey, findKeyFeatures):
             assert False, "Value not find %s" %e
 
 def callAPIResources(token):
-    r = requests.get(constants.API_RESOURCES, headers=constants.get_header(token))
+    r = requests.get(constants.API_RESOURCES, headers=constants.get_auth_header(token))
     return r
 
 def findByKeyJson(json, value, findKey):
