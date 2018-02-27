@@ -23,19 +23,19 @@ def parseBoltRecords(records):
     return nodes
 
 
-def getDepsNodes(node, ids, resource_ids, session):
+def getDepsNodes(node, type_analysis, resource_ids, session):
     if "Group" in node["labels"]:
         lista = session.write_transaction(queryGroupDependenciesFilter,
-                                          ids, node["uuid"], resource_ids)
+                                          node["uuid"], resource_ids)
         node["depends"] = [x["(id(r))"] for x in lista.data()]
     elif "Resource" in node["labels"]:
         lista = session.write_transaction(queryResourceDependenciesFilter,
-                                          ids, node["uuid"], resource_ids)
+                                            type_analysis, node["uuid"],
+                                            resource_ids)
         node["depends"] = [x["(id(r))"] for x in lista.data()]
     return node
 
-
-def parseBoltPathsFlat(records, ids, toplevel, session):
+def parseBoltPathsFlat(records, type_analysis, toplevel, session):
     records = records.data()
     nodes = list(set([item for
                       sublist in map(lambda x: x["p"].nodes, records)
@@ -55,7 +55,7 @@ def parseBoltPathsFlat(records, ids, toplevel, session):
     # Add dependencies
     resource_ids = list(map(lambda x: x["uuid"],
                             filter(lambda x: "Resource" in x["labels"], nodes)))
-    nodes = [getDepsNodes(x, ids, resource_ids, session) for x in nodes]
+    nodes = [getDepsNodes(x, type_analysis, resource_ids, session) for x in nodes]
     return nodes
 
 
@@ -63,7 +63,6 @@ def verifyAlreadyExists(records, levelsMap):
     for key, value in levelsMap.items():
         records = [x for x in records if x not in levelsMap[key]]
     return records
-
 
 def getGroupDependencies(records, session):
     for node in records:

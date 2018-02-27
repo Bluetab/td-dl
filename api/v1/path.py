@@ -3,7 +3,6 @@ from api.common.parser import parseBoltPathsFlat, parseBoltPathsTree
 from api.common.query import queryPath, getUuidsFromNodes
 from api.common.utils import make_error, checkparams, checkonlyone
 from api.settings.db import get_neo4j_db
-from api.settings.constants import IMPACT_ANALYSIS, LINEAGE_ANALYSIS
 from api.settings.auth import auth
 
 path = Blueprint('path', __name__)
@@ -26,13 +25,11 @@ def index():
                                             ("struct_id", request.json[param]))
     else:
         ids = request.json[param]
-    query_path_analysis = LINEAGE_ANALYSIS if type_analysis == "lineage" else IMPACT_ANALYSIS
     with get_neo4j_db() as session:
         paths = parseBoltPathsFlat(
-            session.write_transaction(queryPath, query_path_analysis, toplevel, ids, levels),
-            ids, toplevel, session)
+            session.write_transaction(queryPath, type_analysis, toplevel, ids, levels),
+            type_analysis, toplevel, session)
         return jsonify({"paths": paths, "uuids": ids}), 200
-
 
 @path.route('/path/levels', methods=['POST'])
 @auth.login_required

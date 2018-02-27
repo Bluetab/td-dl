@@ -2,7 +2,6 @@ from support import constants
 import requests
 import pandas
 
-
 def createFilesAndUpload(context):
 
     df_groups = pandas.DataFrame([])
@@ -41,6 +40,18 @@ def createFilesAndUpload(context):
     request = requests.post(constants.API_UPLOAD, files=files, headers=constants.get_auth_header(context.token))
 
     return request
+
+def check_table_json(context, jsonData):
+
+    for row in context.table:
+        object_json = findByKeyJson(jsonData['paths'], row["Id"], 'external_id')
+        #assert False, "JSON: %s" % object_json
+        assert object_json['name'] == row["Name"]
+        assert object_json['type'] == row["Type"]
+        assert object_json['description'] == row["Description"], "JSON: %s" % object_json
+        if row["Contains"]:
+            findArrayJsonValues(context.token, object_json, 'contains', row["Contains"])
+        findArrayJsonValues(context.token, object_json, 'depends', row["Depends"])
 
 def appendDataFrame(df, df_temp):
     df = df_temp if df.empty else df.append(df_temp)
