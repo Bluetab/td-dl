@@ -7,6 +7,8 @@ auth = HTTPTokenAuth(scheme='Bearer')
 
 @auth.verify_token
 def verify_token(token):
+    if not token:
+        return False
     data = verify_auth_token(token)
     if data:
         g.current_user = data
