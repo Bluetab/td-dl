@@ -2,6 +2,7 @@
 
 SCRIPT=$0
 OPTION=$1
+PROJECT_PATH=/home/ec2-user/data-lineage
 
 main(){
 
@@ -40,6 +41,7 @@ stop(){
 
 start(){
   source /home/ec2-user/data-lineage/venv/bin/activate
+  cd $PROJECT_PATH
   exec gunicorn --workers 3 --bind unix:/home/ec2-user/data-lineage/lineage.sock wsgi --daemon
 }
 
