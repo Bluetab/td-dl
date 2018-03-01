@@ -21,6 +21,7 @@ echo "
 export NEO4J_PASSWORD=$NEO4J_PASSWORD
 export PRODUCTION_HOST=$PRODUCTION_HOST
 export PRODUCTION_USER=$PRODUCTION_USER
+export GUARDIAN_SECRET_KEY=$GUARDIAN_SECRET_KEY
 export PRODUCTION_PEM=\"$PRODUCTION_PEM\"" >> /working_code/env_vars.sh
 
 chmod +x /working_code/env_vars.sh

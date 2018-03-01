@@ -22,4 +22,6 @@ def verify_auth_token(token):
                            audience=app.config['JWT_AUD'])
     except jwt.ExpiredSignature:
         return None
+    except jwt.DecodeError:
+        return None
     return token
