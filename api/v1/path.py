@@ -7,6 +7,7 @@ from api.settings.auth import auth
 
 path = Blueprint('path', __name__)
 
+
 @path.route('/path', methods=['POST'])
 @auth.login_required
 def index():
@@ -27,9 +28,11 @@ def index():
         ids = request.json[param]
     with get_neo4j_db() as session:
         paths = parseBoltPathsFlat(
-            session.write_transaction(queryPath, type_analysis, toplevel, ids, levels),
+            session.write_transaction(queryPath, type_analysis,
+                                      toplevel, ids, levels),
             type_analysis, toplevel, session)
         return jsonify({"paths": paths, "uuids": ids}), 200
+
 
 @path.route('/path/levels', methods=['POST'])
 @auth.login_required

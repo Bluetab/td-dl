@@ -1,6 +1,8 @@
 from api.common.utils import format_levels
 from api.settings.constants import (IMPACT_ANALYSIS, LINEAGE_ANALYSIS,
-                                IMPACT_ANALYSIS_LEVELS, LINEAGE_ANALYSIS_LEVELS)
+                                    IMPACT_ANALYSIS_LEVELS,
+                                    LINEAGE_ANALYSIS_LEVELS)
+
 
 def queryMatchNode(tx, node, filters="", limit=25):
     query = """
@@ -44,8 +46,10 @@ def queryGetNode(tx, node, node_id, limit=25):
 
 
 def queryPath(tx, type_analysis, toplevel, ids, levels):
-    query_path_analysis = LINEAGE_ANALYSIS_LEVELS if type_analysis == "lineage" else IMPACT_ANALYSIS_LEVELS
-    query_path_analysis = query_path_analysis.format(levels=format_levels(levels))
+    query_path_analysis = LINEAGE_ANALYSIS_LEVELS \
+        if type_analysis == "lineage" else IMPACT_ANALYSIS_LEVELS
+    query_path_analysis = query_path_analysis.format(
+        levels=format_levels(levels))
     query = """
             MATCH p={query_path_analysis}
             WHERE id(r) in [{ids}] WITH DISTINCT NODES(p)
@@ -57,7 +61,7 @@ def queryPath(tx, type_analysis, toplevel, ids, levels):
             WHERE id(X) in [{ids}]
             RETURN path as p
             """.format(query_path_analysis=query_path_analysis,
-                ids=",".join(map(str, ids)), toplevel=toplevel)
+                       ids=",".join(map(str, ids)), toplevel=toplevel)
     records = tx.run(query)
     return records
 
@@ -68,7 +72,8 @@ def queryPathLevels(tx, ids, levels):
             WHERE id(r) in [{ids}] WITH collect(path) as paths
             CALL apoc.convert.toTree(paths) yield value
             RETURN value
-            """.format(levels=format_levels(levels), ids=",".join(map(str, ids)))
+            """.format(levels=format_levels(levels),
+                       ids=",".join(map(str, ids)))
     records = tx.run(query)
     return records
 
@@ -85,7 +90,7 @@ def buildNodeFilterEqual(tupleList):
 
 def queryDependsWorkflow(tx, ids):
     query = """
-            MATCH (R:Recurso)-[B:BELONGS]->(TG:Recurso{{tipo:'Workflow'}})
+            MATCH (R:Resource)-[B:BELONGS]->(TG:Resource{{tipo:'Workflow'}})
             WHERE ID(R) IN [{ids}]
             RETURN DISTINCT TG AS n
             """.format(ids=",".join(map(str, ids)))
@@ -95,9 +100,9 @@ def queryDependsWorkflow(tx, ids):
 
 def queryGroupDependencies(tx, group_id):
     query = """
-            MATCH p1=(g_ini:Group)-[:CONTAINS*]->(r_ini:Recurso)
+            MATCH p1=(g_ini:Group)-[:CONTAINS*]->(r_ini:Resource)
             WHERE id(g_ini) = {group_id}
-            MATCH p2=(r_ini)-[d:DEPENDS]->(g:Recurso),
+            MATCH p2=(r_ini)-[d:DEPENDS]->(g:Resource),
             p3=(g)<-[:CONTAINS*]-(r:Group {tipo: g_ini.tipo})
             WHERE id(r) <> {group_id_1}
             RETURN distinct(id(r))
@@ -116,14 +121,14 @@ def queryGroupDependenciesFilter(tx, group_id, resource_ids):
             WHERE id(r) <> {group_id}
             RETURN distinct(id(r))
             """.format(group_id=group_id,
-                resource_ids=",".join(map(str, resource_ids)))
+                       resource_ids=",".join(map(str, resource_ids)))
     records = tx.run(query)
     return records
 
 
 def queryGroupContains(tx, group_id):
     query = """
-            MATCH p1=(g_ini:Grupo)-[:CONTAINS]->(r)
+            MATCH p1=(g_ini:Group)-[:CONTAINS]->(r)
             WHERE id(g_ini) = %d
             RETURN distinct(id(r))""" % group_id
     records = tx.run(query)
@@ -139,15 +144,17 @@ def queryResourceDependencies(tx, resource_id):
     return records
 
 
-def queryResourceDependenciesFilter(tx, type_analysis, resource_id, resource_ids):
-    query_path_analysis = LINEAGE_ANALYSIS if type_analysis == "lineage" else IMPACT_ANALYSIS
+def queryResourceDependenciesFilter(tx, type_analysis,
+                                    resource_id, resource_ids):
+    query_path_analysis = LINEAGE_ANALYSIS \
+        if type_analysis == "lineage" else IMPACT_ANALYSIS
     query = """
             MATCH p={query_path_analysis}
             WHERE id(g_ini) = {resource_id} AND id(r) in [{resource_ids}]
             RETURN distinct(id(r))
             """.format(query_path_analysis=query_path_analysis,
-                resource_id=resource_id,
-                resource_ids=",".join(map(str, resource_ids)))
+                       resource_id=resource_id,
+                       resource_ids=",".join(map(str, resource_ids)))
     records = tx.run(query)
     return records
 
@@ -165,7 +172,7 @@ def queryResourceDependenciesNodesFilter(tx, resource_ids):
 
 def queryGetGroupsFromResource(tx, resource_id):
     query = """
-            MATCH(G:Grupo)-[A:CONTAINS]->(R:Resource)
+            MATCH(G:Group)-[A:CONTAINS]->(R:Resource)
             WHERE ID(R) = {} WITH G as n
             RETURN DISTINCT n
             """.format(resource_id)
@@ -195,7 +202,7 @@ def searchResourceReg(tx, prop, value, limit=25):
 
 def queryGroupTree(tx):
     query = """
-            MATCH path=(n:Grupo {showtree: "True"})-[:CONTAINS*]->(:Resource)
+            MATCH path=(n:Group {showtree: "True"})-[:CONTAINS*]->(:Resource)
             WITH collect(path) as paths
             CALL apoc.convert.toTree(paths) yield value
             RETURN value

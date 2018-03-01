@@ -11,7 +11,7 @@ search = Blueprint('search', __name__)
 def index():
     if not request.args:
         return make_error(400, "Error args not found")
-    error, keyvalue = findInArgs("titulo", request.args)
+    error, keyvalue = findInArgs("title", request.args)
     if error:
         return make_error(400, error)
     with get_neo4j_db() as session:
