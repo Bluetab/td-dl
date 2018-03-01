@@ -18,8 +18,13 @@ main(){
       status
       exit 0
       ;;
+    (restart)
+      stop
+      start
+      exit 0
+      ;;
     (*)
-      echo "Usage: $SCRIPT {stop|start|status}"
+      echo "Usage: $SCRIPT {stop|start|restart|status}"
       exit 2
       ;;
   esac
@@ -40,11 +45,6 @@ start(){
 
 status(){
   exec ps aux | grep gunicorn | grep lineage
-}
-
-restart() {
-  stop
-  start
 }
 
 main
