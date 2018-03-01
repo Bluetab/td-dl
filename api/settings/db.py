@@ -8,6 +8,7 @@ import sys
 
 uri = "bolt://{}:7687".format(os.getenv("NEO4J_HOST", "localhost"))
 
+
 def get_neo4j_db():
 
     if not hasattr(g, "neo4j_driver") or g.neo4j_driver.closed():
@@ -17,6 +18,7 @@ def get_neo4j_db():
         g.neo4j_session = create_session(g.neo4j_driver)
 
     return g.neo4j_session
+
 
 def create_connection():
 
@@ -30,6 +32,7 @@ def create_connection():
         sys.exit(0)
 
     return driver
+
 
 def create_session(driver):
     return driver.session()
