@@ -42,5 +42,9 @@ status(){
   exec ps aux | grep gunicorn | grep lineage
 }
 
+restart() {
+  stop
+  start
+}
 
 main
