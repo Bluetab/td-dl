@@ -42,7 +42,7 @@ stop(){
 start(){
   source /home/ec2-user/data-lineage/venv/bin/activate
   cd $PROJECT_PATH
-  exec gunicorn --workers 3 --bind unix:/home/ec2-user/data-lineage/lineage.sock wsgi --daemon
+  exec gunicorn --workers 3 --bind 127.0.0.1:4002 wsgi --daemon
 }
 
 status(){

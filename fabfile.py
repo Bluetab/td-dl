@@ -35,6 +35,8 @@ def deploy():
     put("wsgi.py", "/home/ec2-user/data-lineage/wsgi.py")
     put("scripts/launchApp.sh",
         "/home/ec2-user/data-lineage/scripts/launchApp.sh")
+    put("scripts/importDBNeo4j.sh",
+        "/home/ec2-user/data-lineage/scripts/importDBNeo4j.sh")
     run("chmod 755 /home/ec2-user/data-lineage/scripts/launchApp.sh")
 
     run("/home/ec2-user/data-lineage/scripts/launchApp.sh stop")
