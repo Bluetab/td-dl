@@ -2,7 +2,7 @@
 
 SCRIPT=$0
 OPTION=$1
-PROJECT_PATH=/home/ec2-user/data-lineage
+PROJECT_PATH=/home/ec2-user/td_dl
 
 main(){
 
@@ -40,7 +40,7 @@ stop(){
 }
 
 start(){
-  source /home/ec2-user/data-lineage/venv/bin/activate
+  source /home/ec2-user/td_dl/venv/bin/activate
   cd $PROJECT_PATH
   exec gunicorn --workers 3 --bind 127.0.0.1:4002 wsgi --daemon
 }
