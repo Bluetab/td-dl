@@ -21,6 +21,7 @@ def deploy():
 
     # upload env
     run('mkdir -p /home/ec2-user/td_dl')
+    run('mkdir -p /home/ec2-user/td_dl/scripts')
     run('sudo rm -rf /home/ec2-user/td_dl/venv')
     run('virtualenv -p python3 /home/ec2-user/td_dl/venv')
 
