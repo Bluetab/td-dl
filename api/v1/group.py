@@ -3,10 +3,12 @@ from flask import Blueprint, jsonify, request
 from api.common.query import (queryMatchNode, queryMatchType, queryGetNode,
                               buildNodeFilterEqual,
                               queryGroupDependencies, queryGroupContains,
-                              queryGroupTree)
-from api.common.parser import parseBoltRecords
+                              queryGroupTree, queryGetResourcesFromGroups,
+                              queryPath)
+from api.common.parser import parseBoltRecords, parseBoltPathsFlat
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
+from api.common.utils import make_error, checkparams, checkonlyone
 
 
 group = Blueprint('group', __name__)
@@ -79,3 +81,33 @@ def treeGroups():
         result = session.write_transaction(queryGroupTree)
         nodes["tree"] = [x["value"] for x in result.data()]
         return jsonify(nodes), 200
+
+
+@group.route('/groups/path', methods=['POST'])
+@auth.login_required
+def pathGroups():
+        error, param = checkonlyone(["uuids", "titles"], request)
+        if error:
+            return make_error(400, error)
+        error = checkparams(["toplevel", "levels", "type_analysis"], request)
+        if error:
+            return make_error(400, error)
+        toplevel = request.json["toplevel"]
+        levels = request.json["levels"]
+        type_analysis = request.json["type_analysis"]
+
+        if param == "titles":
+            with get_neo4j_db() as session:
+                group_ids = session.write_transaction(getUuidsFromNodes,
+                                                ("title", request.json[param]))
+        else:
+            group_ids = request.json[param]
+        with get_neo4j_db() as session:
+            ids = session.write_transaction(queryGetResourcesFromGroups,
+                                             group_ids)
+            paths = parseBoltPathsFlat(
+                session.write_transaction(queryPath, type_analysis,
+                                          toplevel, ids, levels),
+                type_analysis, toplevel, session)
+
+        return jsonify({"paths": paths, "uuids": ids}), 200
