@@ -4,11 +4,11 @@ from api.common.query import (queryMatchNode, queryMatchType, queryGetNode,
                               buildNodeFilterEqual,
                               queryGroupDependencies, queryGroupContains,
                               queryGroupTree, queryGetResourcesFromGroups,
-                              queryPath)
+                              queryPath, getTopGroupType)
 from api.common.parser import parseBoltRecords, parseBoltPathsFlat
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
-from api.common.utils import resp, checkparams, checkonlyone
+from api.common.utils import resp, checkparams
 
 
 group = Blueprint('group', __name__)
@@ -68,7 +68,7 @@ def typeGroups():
 
     with get_neo4j_db() as session:
         lista = session.write_transaction(queryMatchType, "Group")
-        nodes["types"] = [x["tipo"] for x in lista.data()]
+        nodes["types"] = [x["type"] for x in lista.data()]
         return jsonify(nodes), 200
 
 
@@ -86,28 +86,30 @@ def treeGroups():
 @group.route('/groups/path', methods=['POST'])
 @auth.login_required
 def pathGroups():
-        error, param = checkonlyone(["uuids", "titles"], request)
-        if error:
-            return resp(400, error)
-        error = checkparams(["toplevel", "levels", "type_analysis"], request)
-        if error:
-            return resp(400, error)
-        toplevel = request.json["toplevel"]
-        levels = request.json["levels"]
-        type_analysis = request.json["type_analysis"]
+    error = checkparams(["toplevel", "levels", "type_analysis"], request)
+    if error:
+        return resp(400, error)
+    toplevel = request.json["toplevel"]
+    levels = request.json["levels"]
+    type_analysis = request.json["type_analysis"]
+    group_ids = request.json["uuids"]
 
-        if param == "titles":
-            with get_neo4j_db() as session:
-                group_ids = session.write_transaction(getUuidsFromNodes,
-                                                ("title", request.json[param]))
-        else:
-            group_ids = request.json[param]
-        with get_neo4j_db() as session:
-            ids = session.write_transaction(queryGetResourcesFromGroups,
-                                             group_ids)
-            paths = parseBoltPathsFlat(
-                session.write_transaction(queryPath, type_analysis,
-                                          toplevel, ids, levels),
-                type_analysis, toplevel, session)
+    with get_neo4j_db() as session:
+        ids = session.write_transaction(queryGetResourcesFromGroups,
+                                        group_ids)
+        paths = parseBoltPathsFlat(
+            session.write_transaction(queryPath, type_analysis,
+                                      toplevel, ids, levels),
+            type_analysis, toplevel, session)
 
-        return jsonify({"paths": paths, "uuids": ids}), 200
+    return jsonify({"paths": paths, "uuids": ids}), 200
+
+
+@group.route('/groups/toptype', methods=['GET'])
+@auth.login_required
+def topGroup():
+    result = {}
+    with get_neo4j_db() as session:
+        types = session.write_transaction(getTopGroupType)
+        result["type"] = [x["type"] for x in types.data()][0]
+        return jsonify(result), 200

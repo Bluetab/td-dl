@@ -90,7 +90,7 @@ def buildNodeFilterEqual(tupleList):
 
 def queryDependsWorkflow(tx, ids):
     query = """
-            MATCH (R:Resource)-[B:BELONGS]->(TG:Resource{{tipo:'Workflow'}})
+            MATCH (R:Resource)-[B:BELONGS]->(TG:Resource{{type:'Workflow'}})
             WHERE ID(R) IN [{ids}]
             RETURN DISTINCT TG AS n
             """.format(ids=",".join(map(str, ids)))
@@ -103,7 +103,7 @@ def queryGroupDependencies(tx, group_id):
             MATCH p1=(g_ini:Group)-[:CONTAINS*]->(r_ini:Resource)
             WHERE id(g_ini) = {group_id}
             MATCH p2=(r_ini)-[d:DEPENDS]->(g:Resource),
-            p3=(g)<-[:CONTAINS*]-(r:Group {tipo: g_ini.tipo})
+            p3=(g)<-[:CONTAINS*]-(r:Group {type: g_ini.type})
             WHERE id(r) <> {group_id_1}
             RETURN distinct(id(r))
             """.format(group_id=group_id, group_id_1=group_id)
@@ -126,7 +126,7 @@ def queryGroupDependenciesFilter(tx, group_id, resource_ids):
             WHERE id(g_ini) = {group_id} AND id(r_ini) in [{resource_ids}]
             MATCH p2=(r_ini)-[d:DEPENDS]->(g:Resource)
             WHERE id(g) in [{resource_ids}]
-            MATCH p3=(g)<-[:CONTAINS*]-(r:Group {{tipo: g_ini.tipo}})
+            MATCH p3=(g)<-[:CONTAINS*]-(r:Group {{type: g_ini.type}})
             WHERE id(r) <> {group_id}
             RETURN distinct(id(r))
             """.format(group_id=group_id,
@@ -211,10 +211,21 @@ def searchResourceReg(tx, prop, value, limit=25):
 
 def queryGroupTree(tx):
     query = """
-            MATCH path=(n:Group {showtree: "True", type : "Load"})-[:CONTAINS*]->(target:Group{type: "Object"})
+            MATCH path=(n:Group {showtree: "True"})
+            -[:CONTAINS*]->(target:Group{type: "Object"})
             WITH collect(path) as paths
             CALL apoc.convert.toTree(paths) yield value
             RETURN value
             """
+    records = tx.run(query)
+    return records
+
+
+def getTopGroupType(tx):
+    query = """
+        MATCH (ini:Group)-[:CONTAINS*]->(:Group)
+        WHERE not ((ini)<-[:CONTAINS]-())
+        RETURN ini.type as type limit 1
+        """
     records = tx.run(query)
     return records

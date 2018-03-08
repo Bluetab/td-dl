@@ -23,9 +23,10 @@ def get_neo4j_db():
 def create_connection():
 
     try:
-        driver = GraphDatabase.driver(uri,
-                                      auth=(os.getenv("NEO4J_USER", "neo4j"),
-                                            os.getenv("NEO4J_PASSWORD", "bluetab")))
+        driver = GraphDatabase.driver(
+            uri,
+            auth=(os.getenv("NEO4J_USER", "neo4j"),
+                  os.getenv("NEO4J_PASSWORD", "bluetab")))
 
     except ServiceUnavailable:
         print("Cannot access to neo4j database uri: {}".format(uri))
