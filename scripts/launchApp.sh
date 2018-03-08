@@ -35,7 +35,7 @@ main(){
 stop(){
   stringStatus=`status`
   if [[ ! -z ${stringStatus} ]]; then
-    exec kill -9 `ps aux | grep gunicorn | grep lineage | awk '{ print $2 }'`
+    exec kill -9 `ps aux | grep gunicorn | grep td_dl | awk '{ print $2 }'`
   fi
 }
 
@@ -46,7 +46,7 @@ start(){
 }
 
 status(){
-  exec ps aux | grep gunicorn | grep lineage
+  exec ps aux | grep gunicorn | grep td_dl
 }
 
 main
