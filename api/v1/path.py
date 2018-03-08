@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from api.common.parser import parseBoltPathsFlat, parseBoltPathsTree
 from api.common.query import queryPath, getUuidsFromNodes
-from api.common.utils import make_error, checkparams, checkonlyone
+from api.common.utils import resp, checkparams, checkonlyone
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
 
@@ -13,10 +13,10 @@ path = Blueprint('path', __name__)
 def index():
     error, param = checkonlyone(["uuids", "titles"], request)
     if error:
-        return make_error(400, error)
+        return resp(400, error)
     error = checkparams(["toplevel", "levels", "type_analysis"], request)
     if error:
-        return make_error(400, error)
+        return resp(400, error)
     toplevel = request.json['toplevel']
     levels = request.json['levels']
     type_analysis = request.json['type_analysis']
@@ -39,11 +39,11 @@ def index():
 def levelsFromPath():
     error, param = checkonlyone(["struct_id"], request)
     if error:
-        return make_error(400, error)
+        return resp(400, error)
 
     error = checkparams(["levels"], request)
     if error:
-        return make_error(400, error)
+        return resp(400, error)
     levels = request.json['levels']
 
     with get_neo4j_db() as session:

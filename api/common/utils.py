@@ -7,7 +7,7 @@ def findIndexInList(array, condition):
             return i
 
 
-def make_error(status_code, message):
+def resp(status_code, message):
     response = jsonify({
         'status': status_code,
         'message': message,
@@ -24,9 +24,12 @@ def checkparams(params, request):
             return "Error {} not found".format(param)
     return False
 
+
 def format_levels(levels):
-    format_levels = "*" if levels == -1 else "*1..{levels}".format(levels=levels)
+    format_levels = "*" if levels == -1 \
+        else "*1..{levels}".format(levels=levels)
     return format_levels
+
 
 def checkonlyone(params, request):
     if not request.json:

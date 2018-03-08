@@ -8,7 +8,7 @@ from api.common.query import (queryMatchNode, queryMatchType, queryGetNode,
 from api.common.parser import parseBoltRecords, parseBoltPathsFlat
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
-from api.common.utils import make_error, checkparams, checkonlyone
+from api.common.utils import resp, checkparams, checkonlyone
 
 
 group = Blueprint('group', __name__)
@@ -88,10 +88,10 @@ def treeGroups():
 def pathGroups():
         error, param = checkonlyone(["uuids", "titles"], request)
         if error:
-            return make_error(400, error)
+            return resp(400, error)
         error = checkparams(["toplevel", "levels", "type_analysis"], request)
         if error:
-            return make_error(400, error)
+            return resp(400, error)
         toplevel = request.json["toplevel"]
         levels = request.json["levels"]
         type_analysis = request.json["type_analysis"]

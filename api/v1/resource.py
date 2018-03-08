@@ -3,7 +3,7 @@ from api.common.parser import parseBoltRecords, parseWorkflowDependencies
 from api.common.query import (queryMatchNode, queryGetNode,
                               buildNodeFilterEqual, queryResourceDependencies,
                               getUuidsFromNodes)
-from api.common.utils import make_error, checkonlyone
+from api.common.utils import resp, checkonlyone
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
 
@@ -50,7 +50,7 @@ def deps(id):
 def workflowsFromResource():
     error, param = checkonlyone(["struct_id"], request)
     if error:
-        return make_error(400, error)
+        return resp(400, error)
 
     with get_neo4j_db() as session:
         ids = session.write_transaction(getUuidsFromNodes,
@@ -65,7 +65,7 @@ def verifyResourceExistance():
     resource = request.args.get('resource')
 
     if not resource:
-        return make_error(400, 'Not Element Found')
+        return resp(400, 'Not Element Found')
 
     filters = "WHERE n.struct_id='{}'".format(resource)
 
