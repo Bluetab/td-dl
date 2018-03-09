@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -x
+
 SCRIPT=$0
 OPTION=$1
 PROJECT_PATH=/home/ec2-user/td_dl
@@ -42,12 +44,8 @@ stop(){
 start(){
   source ${PROJECT_PATH}/venv/bin/activate
   cd $PROJECT_PATH
-  stringStatus=`status`
-  if [[ -z ${stringStatus} ]]; then
-    exec gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
-  else
-    exit 1
-  fi
+  sleep 2
+  exec gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
 }
 
 status(){
