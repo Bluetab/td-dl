@@ -1,7 +1,5 @@
 #! /bin/bash
 
-set -x
-
 SCRIPT=$0
 OPTION=$1
 PROJECT_PATH=/home/ec2-user/td_dl
