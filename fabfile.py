@@ -41,5 +41,6 @@ def deploy():
         "/home/ec2-user/td_dl/scripts/importDBNeo4j.sh")
     run("chmod 755 /home/ec2-user/td_dl/scripts/launchApp.sh")
 
-    run("/home/ec2-user/td_dl/scripts/launchApp.sh stop && \
-        /home/ec2-user/td_dl/scripts/launchApp.sh start")
+    run("/home/ec2-user/td_dl/scripts/launchApp.sh stop")
+    run("source /home/ec2-user/td_dl/venv/bin/activate")
+    run("/home/ec2-user/td_dl/scripts/launchApp.sh start")
