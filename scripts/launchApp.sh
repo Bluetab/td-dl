@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -x
+
 SCRIPT=$0
 OPTION=$1
 PROJECT_PATH=/home/ec2-user/td_dl
@@ -35,18 +37,18 @@ main(){
 stop(){
   stringStatus=`status`
   if [[ ! -z ${stringStatus} ]]; then
-    exec kill -9 `ps aux | grep gunicorn | grep td_dl | awk '{ print $2 }'`
+    kill -9 `ps aux | grep gunicorn | grep td_dl | awk '{ print $2 }'`
   fi
 }
 
 start(){
-  source /home/ec2-user/td_dl/venv/bin/activate
+  source ${PROJECT_PATH}/venv/bin/activate
   cd $PROJECT_PATH
-  exec gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
+  gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
 }
 
 status(){
-  exec ps aux | grep gunicorn | grep td_dl
+  ps aux | grep gunicorn | grep td_dl
 }
 
 main
