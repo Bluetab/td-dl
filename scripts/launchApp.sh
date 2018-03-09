@@ -40,9 +40,14 @@ stop(){
 }
 
 start(){
-
+  source ${PROJECT_PATH}/venv/bin/activate
   cd $PROJECT_PATH
-  exec gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
+  stringStatus=`status`
+  if [[ -z ${stringStatus} ]]; then
+    exec gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
+  else
+    exit 1
+  fi
 }
 
 status(){
