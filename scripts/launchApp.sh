@@ -44,7 +44,8 @@ stop(){
 start(){
   source ${PROJECT_PATH}/venv/bin/activate
   cd $PROJECT_PATH
-  gunicorn --bind 127.0.0.1:4003 wsgi d
+  gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
+  status
 }
 
 status(){
