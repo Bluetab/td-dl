@@ -15,6 +15,7 @@ setup(
         'Flask==0.12.2',
         'Flask-Cors==3.0.2',
         'Flask-HTTPAuth==3.2.3',
+        'flask-swagger==0.2.13',
         'gunicorn==19.7.1',
         'neo4j-driver==1.3.0',
         'nose2==0.7.3',

@@ -19,6 +19,7 @@ from api.v1.path import path
 from api.v1.search import search
 from api.v1.session import session
 from api.v1.upload import upload
+from api.v1.spec import spec
 
 API_V1 = '/api/lineage'
 
@@ -28,3 +29,4 @@ app.register_blueprint(path, url_prefix=API_V1)
 app.register_blueprint(search, url_prefix=API_V1)
 app.register_blueprint(session, url_prefix=API_V1)
 app.register_blueprint(upload, url_prefix=API_V1)
+app.register_blueprint(spec, url_prefix=API_V1)
