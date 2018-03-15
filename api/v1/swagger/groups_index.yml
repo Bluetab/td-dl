@@ -1,0 +1,199 @@
+Get a list of groups
+---
+tags:
+  - groups
+definitions:
+  - schema:
+      id: Group
+      properties:
+        external_id:
+          type: string
+          description: External identification
+        labels:
+          type: array
+          description: Group labels
+        showtree:
+          type: string
+          description: Node property to show or not in tree (True/False)
+        title:
+          type: string
+          description: Group title
+        type:
+          type: string
+          description: Group type
+        uuid:
+          type: integer
+          description: Group id (Neo4j id)
+      example:
+        external_id: string
+        labels: []
+        showtree: True
+        title: string
+        type: string
+        uuid: 123
+  - schema:
+      id: GroupsResponse
+      type: array
+      items:
+        $ref: "#/definitions/Group"
+  - schema:
+      id: GroupDepends
+      properties:
+        external_id:
+          type: string
+          description: External identification
+        labels:
+          type: array
+          description: Group labels
+        showtree:
+          type: string
+          description: Node property to show or not in tree (True/False)
+        title:
+          type: string
+          description: Group title
+        type:
+          type: string
+          description: Group type
+        uuid:
+          type: integer
+          description: Group id (Neo4j id)
+        depends:
+          type: array
+          description: Groups dependency ids
+      example:
+        external_id: string
+        labels: []
+        showtree: True
+        title: string
+        type: string
+        uuid: 123
+        depends: []
+  - schema:
+      id: GroupContains
+      properties:
+        external_id:
+          type: string
+          description: External identification
+        labels:
+          type: array
+          description: Group labels
+        showtree:
+          type: string
+          description: Node property to show or not in tree (True/False)
+        title:
+          type: string
+          description: Group title
+        type:
+          type: string
+          description: Group type
+        uuid:
+          type: integer
+          description: Group id (Neo4j id)
+        contains:
+          type: array
+          description: Groups contains ids
+      example:
+        external_id: string
+        labels: []
+        showtree: True
+        title: string
+        type: string
+        uuid: 123
+        contains: []
+  - schema:
+      id: GroupTypes
+      properties:
+        types:
+          type: array
+          description: Group types
+      example:
+        types: []
+  - schema:
+      id: GroupTree
+      properties:
+        _id:
+          type: integer
+          description: internal id (Neo4j Id)
+        _type:
+          type: string
+          description: Node type
+        contains:
+          type: array
+          description: Groups contains
+          items:
+            $ref: "#/definitions/GroupTree"
+        external_id:
+          type: string
+          description: External identification
+        showtree:
+          type: string
+          description: Node property to show or not in tree (True/False)
+        title:
+          type: string
+          description: Group title
+        type:
+          type: string
+          description: Group type
+      example:
+        _id: 123
+        _type: string
+        contains: []
+        external_id: string
+        showtree: True
+        title: string
+        type: string
+  - schema:
+      id: GroupsTreeResponse
+      properties:
+        tree:
+          $ref: "#/definitions/GroupTree"
+  - schema:
+      id: GroupPath
+      properties:
+        external_id:
+          type: string
+          description: External identification
+        depth:
+          type: integer
+          description: Group depth tree
+        labels:
+          type: array
+          description: Group labels
+        showtree:
+          type: string
+          description: Node property to show or not in tree (True/False)
+        title:
+          type: string
+          description: Group title
+        type:
+          type: string
+          description: Group type
+        uuid:
+          type: integer
+          description: Group id (Neo4j id)
+        contains:
+          type: array
+          description: Groups contains ids
+        depends:
+          type: array
+          description: Groups dependency ids
+      example:
+        external_id: string
+        depth: 2
+        labels: []
+        showtree: True
+        title: string
+        type: string
+        uuid: 123
+        contains: []
+        depends: []
+  - schema:
+      id: GroupPathResponse
+      type: array
+      items:
+          $ref: "#/definitions/GroupPath"
+responses:
+  200:
+    description: Return a list of groups
+    schema:
+      $ref: "#/definitions/GroupsResponse"

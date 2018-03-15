@@ -1,0 +1,31 @@
+Get groups paths
+---
+tags:
+  - groups
+parameters:
+  - in: body
+    name: body
+    schema:
+      required:
+        - uuids
+        - toplevel
+        - levels
+        - type_analysis
+      properties:
+        uuids:
+          type: array
+          description: Group id (Neo4j id)
+        toplevel:
+          type: string
+          description: Top level group
+        levels:
+          type: integer
+          description: levels paths
+        type_analysis:
+          type: string
+          description: Type analysis (lineage/impact)
+responses:
+  200:
+    description: Returns the groups paths
+    schema:
+      $ref: "#/definitions/GroupPathResponse"

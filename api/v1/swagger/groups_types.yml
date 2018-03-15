@@ -1,0 +1,9 @@
+Get groups types
+---
+tags:
+  - groups
+responses:
+  200:
+    description: Returns the groups types
+    schema:
+      $ref: "#/definitions/GroupTypes"

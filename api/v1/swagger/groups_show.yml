@@ -1,0 +1,15 @@
+Get a specified group
+---
+tags:
+  - groups
+parameters:
+  - type: integer
+    required: true
+    name: id
+    in: path
+    description: Group Id
+responses:
+  200:
+    description: Returns the specified group
+    schema:
+      $ref: "#/definitions/Group"
