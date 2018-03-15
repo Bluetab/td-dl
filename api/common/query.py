@@ -103,7 +103,7 @@ def queryGroupDependencies(tx, group_id):
             MATCH p1=(g_ini:Group)-[:CONTAINS*]->(r_ini:Resource)
             WHERE id(g_ini) = {group_id}
             MATCH p2=(r_ini)-[d:DEPENDS]->(g:Resource),
-            p3=(g)<-[:CONTAINS*]-(r:Group {type: g_ini.type})
+            p3=(g)<-[:CONTAINS*]-(r:Group {{type: g_ini.type}})
             WHERE id(r) <> {group_id_1}
             RETURN distinct(id(r))
             """.format(group_id=group_id, group_id_1=group_id)
