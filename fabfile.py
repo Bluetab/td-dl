@@ -3,7 +3,7 @@ from fabric.api import (local, put, run, env)
 # the user to use for the remote commands
 env.user = 'ec2-user'
 # the servers where the commands are executed
-env.hosts = ['52.214.3.82']
+env.hosts = ['truedat.bluetab.net']
 
 
 def pack():
