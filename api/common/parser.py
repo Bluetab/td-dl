@@ -3,7 +3,7 @@ from api.common.query import (queryGroupDependenciesFilter,
                               queryResourceDependenciesFilter,
                               queryGetResource,
                               queryResourceDependenciesNodesFilter,
-                              queryDependsWorkflow, queryGetGroupsFromResource)
+                              queryGetGroupsFromResource)
 
 
 def parseBoltNodes(node):
@@ -111,15 +111,3 @@ def parseBoltPathsTree(ids, levels, session):
         result.append(levelsMap)
 
     return {"tables": result}
-
-
-def parseWorkflowDependencies(ids, session):
-
-    responseMap = {}
-
-    for idNode in ids:
-        resultNode = parseBoltRecords(queryGetResource(session, [idNode]))
-        workflows = parseBoltRecords(queryDependsWorkflow(session, [idNode]))
-        responseMap[resultNode[0]["struct_id"]] = workflows
-
-    return {"result": responseMap}

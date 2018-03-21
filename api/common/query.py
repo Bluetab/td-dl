@@ -88,16 +88,6 @@ def buildNodeFilterEqual(tupleList):
     return filters
 
 
-def queryDependsWorkflow(tx, ids):
-    query = """
-            MATCH (R:Resource)-[B:BELONGS]->(TG:Resource{{type:'Workflow'}})
-            WHERE ID(R) IN [{ids}]
-            RETURN DISTINCT TG AS n
-            """.format(ids=",".join(map(str, ids)))
-    records = tx.run(query)
-    return records
-
-
 def queryGroupDependencies(tx, group_id):
     query = """
             MATCH p1=(g_ini:Group)-[:CONTAINS*]->(r_ini:Resource)

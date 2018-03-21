@@ -1,0 +1,15 @@
+Get dependecies groups ids from a specified group
+---
+tags:
+  - resources
+parameters:
+  - type: integer
+    required: true
+    name: id
+    in: path
+    description: Resource Id
+responses:
+  200:
+    description: Returns the specified group
+    schema:
+      $ref: "#/definitions/ResourceDepends"

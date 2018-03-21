@@ -1,0 +1,15 @@
+Get a specified group
+---
+tags:
+  - resources
+parameters:
+  - type: integer
+    required: true
+    name: id
+    in: path
+    description: Group Id
+responses:
+  200:
+    description: Returns the specified resource
+    schema:
+      $ref: "#/definitions/Resource"

@@ -1,0 +1,61 @@
+Get a list of resources
+---
+tags:
+  - resources
+definitions:
+  - schema:
+      id: Resource
+      properties:
+        external_id:
+          type: string
+          description: External identification
+        labels:
+          type: array
+          description: Resource labels
+        object_field_name:
+          type: string
+          description: Object field name
+        uuid:
+          type: integer
+          description: Resource id (Neo4j id)
+      example:
+        external_id: string
+        labels: []
+        showtree: True
+        title: string
+        type: string
+        uuid: 123
+  - schema:
+      id: ResourcesResponse
+      type: array
+      items:
+        $ref: "#/definitions/Resource"
+  - schema:
+      id: ResourceDepends
+      properties:
+        external_id:
+          type: string
+          description: External identification
+        labels:
+          type: array
+          description: Resource labels
+        object_field_name:
+          type: string
+          description: Resource title
+        uuid:
+          type: integer
+          description: Resource id (Neo4j id)
+        depends:
+          type: array
+          description: Resources dependency ids
+      example:
+        external_id: string
+        labels: []
+        object_field_name: string
+        uuid: 123
+        depends: []
+responses:
+  200:
+    description: Return a list of resources
+    schema:
+      $ref: "#/definitions/ResourcesResponse"
