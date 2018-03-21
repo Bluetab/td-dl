@@ -103,7 +103,7 @@ def queryGroupDependencies(tx, group_id):
 
 def queryGetResourcesFromGroups(tx, group_ids):
     query = """
-            MATCH (G:Group{{type:'Object'}})-[:CONTAINS*]->(R:Resource)
+            MATCH (G:Group{{type:'Table'}})-[:CONTAINS*]->(R:Resource)
             WHERE ID(G) IN [{group_ids}] RETURN DISTINCT id(R)
             """.format(group_ids=",".join(map(str, group_ids)))
     records = tx.run(query)
@@ -201,8 +201,7 @@ def searchResourceReg(tx, prop, value, limit=25):
 
 def queryGroupTree(tx):
     query = """
-            MATCH path=(n:Group {showtree: "True"})
-            -[:CONTAINS*]->(target:Group{type: "Object"})
+            MATCH path=(n:Group {showtree: "True", type : "Load"})-[:CONTAINS*]->(target:Group{type: "Table"})
             WITH collect(path) as paths
             CALL apoc.convert.toTree(paths) yield value
             RETURN value
