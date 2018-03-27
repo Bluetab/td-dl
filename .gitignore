@@ -10,3 +10,5 @@ import.report
 groups.csv
 relations.csv
 resources.csv
+.idea/
+data-lineage.iml
