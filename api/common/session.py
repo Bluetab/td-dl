@@ -8,12 +8,8 @@ URI = app.config['AUTH_SERVICE_URI']
 
 
 def get_session(user, password):
-    resp = requests.post(URI, json={"user": {"user_name": user,
-                                    "password": password}})
-    if not resp.status_code == 201:
-        return None
-    return resp.json()
-
+    token = jwt.encode({"user_name": user, "password": password, "aud": app.config['JWT_AUD']}, app.config['SECRET_KEY'], algorithm='HS512').decode("utf-8")
+    return {'token': token}
 
 def verify_auth_token(token):
     try:
