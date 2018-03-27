@@ -4,7 +4,8 @@ from api.common.query import (queryMatchNode, queryMatchType, queryGetNode,
                               buildNodeFilterEqual,
                               queryGroupDependencies, queryGroupContains,
                               queryGroupTree, queryGetResourcesFromGroups,
-                              queryPath, getTopGroupType)
+                              queryPath, getTopGroupType, getTopGroups,
+                              listGroupContains)
 from api.common.parser import parseBoltRecords, parseBoltPathsFlat
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
@@ -153,3 +154,29 @@ def topGroup():
         types = session.write_transaction(getTopGroupType)
         result["type"] = [x["type"] for x in types.data()][0]
         return jsonify(result), 200
+
+@group.route('/groups/index_top', methods=['GET'])
+@auth.login_required
+def indexTop():
+    """
+        List top groups
+
+        swagger_from_file: api/v1/swagger/groups_index_top.yml
+    """
+    with get_neo4j_db() as session:
+        groups = session.read_transaction(getTopGroups)
+        groups = parseBoltRecords(groups)
+        return jsonify(groups), 200
+
+@group.route('/groups/<int:id>/index_contains', methods=['GET'])
+@auth.login_required
+def indexContains(id):
+    """
+        List nodes with contains relation with group id passed in url
+
+        swagger_from_file: api/v1/swagger/groups_index_contains.yml
+    """
+    with get_neo4j_db() as session:
+        nodes = session.read_transaction(listGroupContains, id)
+        nodes = parseBoltRecords(nodes)
+        return jsonify(nodes), 200

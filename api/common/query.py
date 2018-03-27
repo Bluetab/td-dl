@@ -209,6 +209,14 @@ def queryGroupTree(tx):
     records = tx.run(query)
     return records
 
+def getTopGroups(tx):
+    query = """
+        MATCH (n:Group)-[:CONTAINS*]->(:Group)
+        WHERE not ((n)<-[:CONTAINS]-())
+        RETURN DISTINCT n
+    """
+    records = tx.run(query)
+    return records
 
 def getTopGroupType(tx):
     query = """
@@ -216,5 +224,13 @@ def getTopGroupType(tx):
         WHERE not ((ini)<-[:CONTAINS]-())
         RETURN ini.type as type limit 1
         """
+    records = tx.run(query)
+    return records
+
+def listGroupContains(tx, group_id):
+    query = """
+        MATCH (x:Group)-[:CONTAINS]->(n) 
+        WHERE id(x)={group_id} 
+        RETURN DISTINCT n""".format(group_id=group_id)
     records = tx.run(query)
     return records

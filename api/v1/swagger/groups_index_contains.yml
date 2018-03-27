@@ -1,0 +1,15 @@
+Get a list of nodes with a contains relation
+---
+tags:
+  - groups
+parameters:
+  - type: integer
+    required: true
+    name: id
+    in: path
+    description: Group Id
+responses:
+  200:
+    description: Returns a list of groups and resources with a contains relation from group passed as get query param
+    schema:
+      $ref: "#/definitions/GroupsResponse"

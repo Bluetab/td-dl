@@ -12,9 +12,9 @@ definitions:
         labels:
           type: array
           description: Resource labels
-        object_field_name:
+        title:
           type: string
-          description: Object field name
+          description: Resource title
         uuid:
           type: integer
           description: Resource id (Neo4j id)
@@ -39,7 +39,7 @@ definitions:
         labels:
           type: array
           description: Resource labels
-        object_field_name:
+        title:
           type: string
           description: Resource title
         uuid:
