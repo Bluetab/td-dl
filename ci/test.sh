@@ -25,7 +25,7 @@ wait_for_neo4j
 
 cp -R /code /working_code
 cd /working_code
-mkdir -p /code/api/media/uploads
+mkdir -p /working_code/api/media/uploads
 sed -i -e "s/sudo\s//g" ./scripts/*
 
 rm -rf /working_code/venv || exit 1
