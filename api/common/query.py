@@ -125,7 +125,7 @@ def queryGroupDependenciesFilter(tx, type_analysis, group_id, resource_ids):
             """.format(group_id=group_id,
                        resource_ids=",".join(map(str, resource_ids)),
                        query_path_analysis=query_path_analysis)
-    print(query)
+
     records = tx.run(query)
     return records
 
