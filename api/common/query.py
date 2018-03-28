@@ -110,17 +110,22 @@ def queryGetResourcesFromGroups(tx, group_ids):
     return [x["id(R)"] for x in records]
 
 
-def queryGroupDependenciesFilter(tx, group_id, resource_ids):
+def queryGroupDependenciesFilter(tx, type_analysis, group_id, resource_ids):
+    query_path_analysis = LINEAGE_ANALYSIS \
+        if type_analysis == "lineage" else IMPACT_ANALYSIS
+
     query = """
             MATCH p1=(g_ini:Group)-[:CONTAINS*]->(r_ini:Resource)
             WHERE id(g_ini) = {group_id} AND id(r_ini) in [{resource_ids}]
-            MATCH p2=(r_ini)-[d:DEPENDS]->(g:Resource)
-            WHERE id(g) in [{resource_ids}]
-            MATCH p3=(g)<-[:CONTAINS*]-(r:Group {{type: g_ini.type}})
-            WHERE id(r) <> {group_id}
-            RETURN distinct(id(r))
+            MATCH p2={query_path_analysis}
+            WHERE id(r) in [{resource_ids}]
+            MATCH p3=(r)<-[:CONTAINS*]-(g:Group {{type: g_ini.type}})
+            WHERE id(g) <> {group_id}
+            RETURN distinct(id(g))
             """.format(group_id=group_id,
-                       resource_ids=",".join(map(str, resource_ids)))
+                       resource_ids=",".join(map(str, resource_ids)),
+                       query_path_analysis=query_path_analysis)
+    print(query)
     records = tx.run(query)
     return records
 
@@ -149,7 +154,7 @@ def queryResourceDependenciesFilter(tx, type_analysis,
         if type_analysis == "lineage" else IMPACT_ANALYSIS
     query = """
             MATCH p={query_path_analysis}
-            WHERE id(g_ini) = {resource_id} AND id(r) in [{resource_ids}]
+            WHERE id(r_ini) = {resource_id} AND id(r) in [{resource_ids}]
             RETURN distinct(id(r))
             """.format(query_path_analysis=query_path_analysis,
                        resource_id=resource_id,
@@ -229,8 +234,8 @@ def getTopGroupType(tx):
 
 def listGroupContains(tx, group_id):
     query = """
-        MATCH (x:Group)-[:CONTAINS]->(n) 
-        WHERE id(x)={group_id} 
+        MATCH (x:Group)-[:CONTAINS]->(n)
+        WHERE id(x)={group_id}
         RETURN DISTINCT n""".format(group_id=group_id)
     records = tx.run(query)
     return records

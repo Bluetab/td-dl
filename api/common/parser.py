@@ -26,8 +26,9 @@ def parseBoltRecords(records):
 def getDepsNodes(node, type_analysis, resource_ids, session):
     if "Group" in node["labels"]:
         lista = session.write_transaction(queryGroupDependenciesFilter,
-                                          node["uuid"], resource_ids)
-        node["depends"] = [x["(id(r))"] for x in lista.data()]
+                                          type_analysis, node["uuid"],
+                                          resource_ids)
+        node["depends"] = [x["(id(g))"] for x in lista.data()]
     elif "Resource" in node["labels"]:
         lista = session.write_transaction(queryResourceDependenciesFilter,
                                           type_analysis, node["uuid"],
