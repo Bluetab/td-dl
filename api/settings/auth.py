@@ -4,7 +4,6 @@ from api.common.session import verify_auth_token
 
 auth = HTTPTokenAuth(scheme='Bearer')
 
-
 @auth.verify_token
 def verify_token(token):
     if not token:

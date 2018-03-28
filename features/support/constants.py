@@ -6,7 +6,6 @@ GROUP = "Group"
 NODES = "nodes"
 RELS = "rels"
 
-API_SESSIONS="http://localhost:4003/api/lineage/sessions"
 API_UPLOAD="http://localhost:4003/api/lineage/upload"
 API_PATH="http://localhost:4003/api/lineage/path"
 API_RESOURCES="http://localhost:4003/api/lineage/resources"

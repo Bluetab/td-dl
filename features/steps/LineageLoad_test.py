@@ -8,8 +8,8 @@ import pandas
 @when('"{username}" tries to load lineage data with following data')
 def step_impl(context, username):
 
-    r = requests.post(constants.API_SESSIONS, data=json.dumps(constants.USER_APP_ADMIN), headers=constants.HEADERS)
-    context.token = r.json()['token']
+    token = lineage.buildToken(constants.USER_APP_ADMIN)
+    context.token = token
     request = lineage.createFilesAndUpload(context)
     context.status_code = request.status_code
 
@@ -28,9 +28,8 @@ def step_impl(context, username, type_analysis, resourceId, groupType):
 
 @given('following lineage data has been already loaded')
 def step_impl(context):
-    r = requests.post(constants.API_SESSIONS, \
-        data=json.dumps(constants.USER_APP_ADMIN), headers=constants.HEADERS)
-    context.token = r.json()['token']
+    token = lineage.buildToken(constants.USER_APP_ADMIN)
+    context.token = token
     request = lineage.createFilesAndUpload(context)
     context.status_code = request.status_code
 

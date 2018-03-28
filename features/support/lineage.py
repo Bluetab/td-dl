@@ -1,6 +1,8 @@
 from support import constants
 import requests
 import pandas
+import jwt
+from api.app import app
 
 def createFilesAndUpload(context):
 
@@ -77,3 +79,8 @@ def findByKeyJson(json, value, findKey):
             object_json = x
 
     return object_json
+
+def buildToken(user):
+    user['user']['aud'] = app.config['JWT_AUD']
+    token = jwt.encode(user['user'], app.config['SECRET_KEY'], app.config['ALGORITHM']).decode("utf-8")
+    return token
