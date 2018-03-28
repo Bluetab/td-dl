@@ -25,13 +25,18 @@ wait_for_neo4j
 
 cp -R /code /working_code
 cd /working_code
+sed -i -e "s/sudo\s//g" ./scripts/*
 
 rm -rf /working_code/venv || exit 1
 virtualenv -p python3.6 /working_code/venv
 source /working_code/venv/bin/activate
-pip install -r /working_code/requirements.txt
+pip install -r /working_code/requirements.txt .[dev]
 
 echo "Starting tests"
 nose2 || exit 1
+
+echo "Starting behave"
+python run.py >test.log 2>&1 &
+behave || exit 1
 
 echo "Test step finish successfully"

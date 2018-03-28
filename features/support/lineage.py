@@ -61,7 +61,8 @@ def appendDataFrame(df, df_temp):
 
 def findArrayJsonValues(token, object_json, findKey, findKeyFeatures):
     for valueJson in object_json[findKey]:
-        object_find = findByKeyJson(callAPIResources(token).json(), valueJson, 'uuid')
+        object_find = findByKeyJson(callAPIResources(token).json() + callAPIGroups(token).json(),
+                                    valueJson, 'uuid')
         try:
             indexvalue = findKeyFeatures.split(",").index(object_find['external_id']), "Got %s" % object_find['external_id']
         except Exception as e:
@@ -69,6 +70,10 @@ def findArrayJsonValues(token, object_json, findKey, findKeyFeatures):
 
 def callAPIResources(token):
     r = requests.get(constants.API_RESOURCES, headers=constants.get_auth_header(token))
+    return r
+
+def callAPIGroups(token):
+    r = requests.get(constants.API_GROUPS, headers=constants.get_auth_header(token))
     return r
 
 def findByKeyJson(json, value, findKey):

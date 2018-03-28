@@ -3,7 +3,6 @@ from support import constants
 from support import lineage
 import requests
 import json
-import pandas
 
 @when('"{username}" tries to load lineage data with following data')
 def step_impl(context, username):
@@ -39,7 +38,7 @@ def step_impl(context, username, type_analysis, resourceId, groupType):
     resource = lineage.findByKeyJson(r.json(), resourceId, 'external_id')
 
     data = {"uuids":[resource['uuid']], "toplevel":groupType, "levels": -1, "type_analysis":type_analysis}
-    r = requests.post(constants.API_PATH, data=json.dumps(data), headers=constants.get_header(context.token))
+    r = requests.post(constants.API_PATH, json=data, headers=constants.get_header(context.token))
     context.jsonData = r.json()
 
 @then('he receives following lineage information')
