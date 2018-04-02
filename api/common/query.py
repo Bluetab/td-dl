@@ -216,7 +216,7 @@ def queryGroupTree(tx):
 
 def getTopGroups(tx):
     query = """
-        MATCH (n:Group)-[:CONTAINS*]->(:Group)
+        MATCH (n:Group)-[:CONTAINS*]->()
         WHERE not ((n)<-[:CONTAINS]-())
         RETURN DISTINCT n
     """
@@ -225,7 +225,7 @@ def getTopGroups(tx):
 
 def getTopGroupType(tx):
     query = """
-        MATCH (ini:Group)-[:CONTAINS*]->(:Group)
+        MATCH (ini:Group)-[:CONTAINS*]->()
         WHERE not ((ini)<-[:CONTAINS]-())
         RETURN ini.type as type limit 1
         """
