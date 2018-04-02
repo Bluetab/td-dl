@@ -85,3 +85,45 @@ Feature: Load Data Lineage using API
       | 3   | Third Field           | Field          | This is Third calculated field     |          |         |
       | 101 | First Group           | System         | Our first group in simple example  | 1,11     | 102     |
       | 102 | Second Group          | System         | Our second group in simple example | 2,3,4,12 |         |
+
+  Scenario: Get a list of nodes with a contains relation
+    Given following lineage data has been already loaded:
+      | File        | Id  | Name                  | Type           | Description                        | Showtree | Id Source | Id Target |
+      | Resources   | 1   | First Field           | Field          | This is First calculated field     |          |           |           |
+      | Resources   | 2   | Second Field          | Field          | This is Second calculated field    |          |           |           |
+      | Groups      | 11  | First Transformation  | System         | This is the first transformation   | True     |           |           |
+      | Groups      | 12  | Second Transformation | System         | This is the second transformation  | True     |           |           |
+      | Groups      | 101 | First Group           | System         | Our first group in simple example  | True     |           |           |
+      | Groups      | 102 | Second Group          | System         | Our second group in simple example | True     |           |           |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 101       | 1         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 101       | 11        |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 2         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 12        |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 12        | 2         |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 2         | 11        |
+    When "app-admin" tries to list Groups with a contains relation with Group Id "101"
+    Then he receives following nodes list:
+      | Id  | Name                  | Type           | Description                        |
+      | 1   | First Field           | Field          | This is First calculated field     |
+      | 11  | First Transformation  | System         | This is the first transformation   |
+
+  Scenario: List top groups
+    Given following lineage data has been already loaded:
+      | File        | Id  | Name                  | Type           | Description                        | Showtree | Id Source | Id Target |
+      | Resources   | 1   | First Field           | Field          | This is First calculated field     |          |           |           |
+      | Resources   | 2   | Second Field          | Field          | This is Second calculated field    |          |           |           |
+      | Groups      | 11  | First Transformation  | System         | This is the first transformation   | True     |           |           |
+      | Groups      | 12  | Second Transformation | System         | This is the second transformation  | True     |           |           |
+      | Groups      | 101 | First Group           | System         | Our first group in simple example  | True     |           |           |
+      | Groups      | 102 | Second Group          | System         | Our second group in simple example | True     |           |           |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 101       | 1         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 101       | 11        |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 2         |
+      | Relations   |     |                       | CONTAINS       |                                    |          | 102       | 12        |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 12        | 2         |
+      | Relations   |     |                       | DEPENDS        |                                    |          | 2         | 11        |
+    When "app-admin" tries to list top Groups
+    Then he receives following nodes list:
+      | Id  | Name                  | Type           | Description                        |
+      | 101 | First Group           | System         | Our first group in simple example  |
+      | 102 | Second Group          | System         | Our second group in simple example |

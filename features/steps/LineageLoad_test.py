@@ -23,7 +23,7 @@ def step_impl(context, username, type_analysis, resourceId, groupType):
 
     data = {"uuids":[resource['uuid']], "toplevel":groupType, "levels": -1, "type_analysis":type_analysis}
     r = requests.post(constants.API_PATH, data=json.dumps(data), headers=constants.get_header(context.token))
-    lineage.check_table_json(context, r.json())
+    lineage.check_table_json(context, r.json()['paths'])
 
 @given('following lineage data has been already loaded')
 def step_impl(context):
@@ -43,4 +43,20 @@ def step_impl(context, username, type_analysis, resourceId, groupType):
 
 @then('he receives following lineage information')
 def step_impl(context):
+    lineage.check_table_json(context, context.jsonData['paths'])
+
+@when('"{username}" tries to list Groups with a contains relation with Group Id "{group_id}"')
+def step_impl(context, username, group_id):
+    r = lineage.callAPIGroups(context.token)
+    resource = lineage.findByKeyJson(r.json(), group_id, 'external_id')
+    r = requests.get("{0}/{1}/index_contains".format(constants.API_GROUPS, resource['uuid']), headers=constants.get_header(context.token))
+    context.jsonData = r.json()
+
+@then('he receives following nodes list')
+def step_impl(context):
     lineage.check_table_json(context, context.jsonData)
+
+@when('"{username}" tries to list top Groups')
+def step_impl(context, username):
+    r = requests.get("{0}/index_top".format(constants.API_GROUPS), headers=constants.get_header(context.token))
+    context.jsonData = r.json()

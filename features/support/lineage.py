@@ -46,14 +46,15 @@ def createFilesAndUpload(context):
 def check_table_json(context, jsonData):
 
     for row in context.table:
-        object_json = findByKeyJson(jsonData['paths'], row["Id"], 'external_id')
+        object_json = findByKeyJson(jsonData, row["Id"], 'external_id')
         #assert False, "JSON: %s" % object_json
         assert object_json['name'] == row["Name"]
         assert object_json['type'] == row["Type"]
         assert object_json['description'] == row["Description"], "JSON: %s" % object_json
-        if row["Contains"]:
+        if "Contains" in row and row["Contains"]:
             findArrayJsonValues(context.token, object_json, 'contains', row["Contains"])
-        findArrayJsonValues(context.token, object_json, 'depends', row["Depends"])
+        if "Depends" in row and row["Depends"]:
+            findArrayJsonValues(context.token, object_json, 'depends', row["Depends"])
 
 def appendDataFrame(df, df_temp):
     df = df_temp if df.empty else df.append(df_temp)
