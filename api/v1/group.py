@@ -30,7 +30,7 @@ def index():
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
                                                            "Group",
                                                            filters))
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200
 
 
 @group.route('/groups/<int:id>', methods=['GET'])
@@ -45,7 +45,9 @@ def show(id):
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
                                                            "Group",
                                                            id))
-        return jsonify(nodes[0]), 200
+        if not nodes:
+            return jsonify({"data": []}), 200
+        return jsonify({"data": nodes[0]}), 200
 
 
 @group.route('/groups/<int:id>/depends', methods=['GET'])
@@ -59,10 +61,12 @@ def deps(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
                                                            "Group",
-                                                           id))[0]
+                                                           id))
+        if not nodes:
+            return jsonify({"data": []}), 200
         lista = session.write_transaction(queryGroupDependencies, id)
-        nodes["depends"] = [x["(id(r))"] for x in lista.data()]
-        return jsonify(nodes), 200
+        nodes[0]["depends"] = [x["(id(r))"] for x in lista.data()]
+        return jsonify({"data": nodes}), 200
 
 
 @group.route('/groups/<int:id>/contains', methods=['GET'])
@@ -76,10 +80,12 @@ def contains(id):
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
                                                            "Group",
-                                                           id))[0]
+                                                           id))
+        if not nodes:
+            return jsonify({"data": []}), 200
         lista = session.write_transaction(queryGroupContains, id)
-        nodes["contains"] = [x["(id(r))"] for x in lista.data()]
-        return jsonify(nodes), 200
+        nodes[0]["contains"] = [x["(id(r))"] for x in lista.data()]
+        return jsonify({"data": nodes}), 200
 
 
 @group.route('/groups/types', methods=['GET'])
@@ -95,7 +101,7 @@ def typeGroups():
     with get_neo4j_db() as session:
         lista = session.write_transaction(queryMatchType, "Group")
         nodes["types"] = [x["type"] for x in lista.data()]
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200
 
 
 @group.route('/groups/tree', methods=['GET'])
@@ -111,7 +117,7 @@ def treeGroups():
     with get_neo4j_db() as session:
         result = session.write_transaction(queryGroupTree)
         nodes["tree"] = [x["value"] for x in result.data()]
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200
 
 
 @group.route('/groups/path', methods=['POST'])
@@ -138,7 +144,7 @@ def pathGroups():
                                       toplevel, ids, levels),
             type_analysis, toplevel, session)
 
-    return jsonify({"paths": paths, "uuids": ids}), 200
+    return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 
 
 @group.route('/groups/toptype', methods=['GET'])
@@ -157,7 +163,7 @@ def topGroup():
             result["type"] = ""
             return jsonify(result, 200)
         result["type"] = types[0]
-        return jsonify(result), 200
+        return jsonify({"data": result}), 200
 
 
 @group.route('/groups/index_top', methods=['GET'])
@@ -171,7 +177,7 @@ def indexTop():
     with get_neo4j_db() as session:
         groups = session.read_transaction(getTopGroups)
         groups = parseBoltRecords(groups)
-        return jsonify(groups), 200
+        return jsonify({"data": groups}), 200
 
 
 @group.route('/groups/<int:id>/index_contains', methods=['GET'])
@@ -185,4 +191,4 @@ def indexContains(id):
     with get_neo4j_db() as session:
         nodes = session.read_transaction(listGroupContains, id)
         nodes = parseBoltRecords(nodes)
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200

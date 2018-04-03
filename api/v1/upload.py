@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from api.settings.auth import auth
 from api.common.utils import abort
@@ -28,7 +28,7 @@ def uploadFiles():
     status = subprocess.call(['./scripts/importDBNeo4j.sh', string_concat])
     if status != 0:
         abort(422, {'message': "unprocessable entity"})
-    return abort(201, {'message': "uploaded"})
+    return jsonify({"data": {'message': "uploaded"}}), 201
 
 
 def allowed_file(filename):

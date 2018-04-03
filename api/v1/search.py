@@ -18,4 +18,4 @@ def index():
         nodes = parseBoltRecords(session.write_transaction(searchResourceReg,
                                                            keyvalue[0],
                                                            keyvalue[1]))
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200

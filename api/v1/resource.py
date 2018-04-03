@@ -23,7 +23,7 @@ def index():
         nodes = parseBoltRecords(session.write_transaction(queryMatchNode,
                                                            "Resource",
                                                            filters))
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200
 
 
 @resource.route('/resources/<int:id>', methods=['GET'])
@@ -38,7 +38,9 @@ def show(id):
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
                                                            "Resource",
                                                            id))
-        return jsonify(nodes[0]), 200
+        if not nodes:
+            return jsonify({"data": []}), 200
+        return jsonify({"data": nodes[0]}), 200
 
 
 @resource.route('/resources/<int:id>/depends', methods=['GET'])
@@ -55,4 +57,4 @@ def deps(id):
                                                            id))[0]
         lista = session.write_transaction(queryResourceDependencies, id)
         nodes["depends"] = [x["(id(r))"] for x in lista.data()]
-        return jsonify(nodes), 200
+        return jsonify({"data": nodes}), 200

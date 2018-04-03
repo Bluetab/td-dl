@@ -24,7 +24,7 @@ def index():
             session.write_transaction(queryPath, type_analysis,
                                       toplevel, ids, levels),
             type_analysis, toplevel, session)
-        return jsonify({"paths": paths, "uuids": ids}), 200
+        return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 
 
 @path.route('/path/levels', methods=['POST'])
@@ -37,4 +37,4 @@ def levelsFromPath():
         ids = session.write_transaction(
             getUuidsFromNodes, ("struct_id", struct_id))
         paths = parseBoltPathsTree(ids, levels, session)
-        return jsonify(paths), 200
+        return jsonify({"data": paths}), 200
