@@ -9,7 +9,7 @@ from api.common.query import (queryMatchNode, queryMatchType, queryGetNode,
 from api.common.parser import parseBoltRecords, parseBoltPathsFlat
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
-from api.common.utils import resp, checkparams
+from api.common.utils import checkparams, abort
 
 
 group = Blueprint('group', __name__)
@@ -124,7 +124,7 @@ def pathGroups():
     """
     error = checkparams(["toplevel", "levels", "type_analysis"], request)
     if error:
-        return resp(400, error)
+        return abort(400, {'message': error})
     toplevel = request.json["toplevel"]
     levels = request.json["levels"]
     type_analysis = request.json["type_analysis"]
@@ -152,8 +152,13 @@ def topGroup():
     result = {}
     with get_neo4j_db() as session:
         types = session.write_transaction(getTopGroupType)
-        result["type"] = [x["type"] for x in types.data()][0]
+        types = [x["type"] for x in types.data()]
+        if not types:
+            result["type"] = ""
+            return jsonify(result, 200)
+        result["type"] = types[0]
         return jsonify(result), 200
+
 
 @group.route('/groups/index_top', methods=['GET'])
 @auth.login_required
@@ -167,6 +172,7 @@ def indexTop():
         groups = session.read_transaction(getTopGroups)
         groups = parseBoltRecords(groups)
         return jsonify(groups), 200
+
 
 @group.route('/groups/<int:id>/index_contains', methods=['GET'])
 @auth.login_required

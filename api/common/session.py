@@ -1,6 +1,7 @@
 import jwt
 from api.app import app
 
+
 def verify_auth_token(token):
     try:
         token = jwt.decode(token, app.config['SECRET_KEY'],

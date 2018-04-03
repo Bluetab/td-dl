@@ -1,12 +1,12 @@
 from flask import g
 from neo4j.v1 import GraphDatabase
 from neo4j.exceptions import ServiceUnavailable
+from api.app import app
 
-import os
 import sys
 
 
-uri = "bolt://{}:7687".format(os.getenv("NEO4J_HOST", "localhost"))
+uri = "bolt://{}:{}".format(app.config["NEO4J_HOST"], app.config["NEO4J_PORT"])
 
 
 def get_neo4j_db():
@@ -25,8 +25,8 @@ def create_connection():
     try:
         driver = GraphDatabase.driver(
             uri,
-            auth=(os.getenv("NEO4J_USER", "neo4j"),
-                  os.getenv("NEO4J_PASSWORD", "bluetab")))
+            auth=(app.config["NEO4J_USER"],
+                  app.config["NEO4J_PASSWORD"]))
 
     except ServiceUnavailable:
         print("Cannot access to neo4j database uri: {}".format(uri))

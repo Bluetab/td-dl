@@ -8,7 +8,7 @@ from tornado.ioloop import IOLoop
 from api.app import app
 
 
-DEFAULT_APP_TCP_PORT = 4003
+DEFAULT_APP_TCP_PORT = app.config['PORT']
 
 http_server = HTTPServer(WSGIContainer(app))
 http_server.listen(DEFAULT_APP_TCP_PORT)

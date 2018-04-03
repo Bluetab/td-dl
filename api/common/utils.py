@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import make_response, jsonify
 
 
 def findIndexInList(array, condition):
@@ -7,13 +7,8 @@ def findIndexInList(array, condition):
             return i
 
 
-def resp(status_code, message):
-    response = jsonify({
-        'status': status_code,
-        'message': message,
-    })
-    response.status_code = status_code
-    return response
+def abort(status_code, body=None):
+    return make_response(jsonify(body), status_code)
 
 
 def checkparams(params, request):

@@ -1,17 +1,15 @@
-from flask import Flask
+from flask import Flask, make_response
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+app.config.from_object('api.settings.config.DevelopmentConfig')
 
-UPLOAD_FOLDER = '/media/uploads'
-ALLOWED_EXTENSIONS = set(['csv', 'zip'])
 
-app.config['SECRET_KEY'] = 'SuperSecretTruedat'
-app.config['JWT_AUD'] = "tdauth"
-app.config['ALGORITHM'] = 'HS512'
-app.config['UPLOAD_FOLDER'] = app.root_path + UPLOAD_FOLDER
-app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
 
 from api.v1.group import group
 from api.v1.resource import resource
@@ -20,7 +18,8 @@ from api.v1.search import search
 from api.v1.upload import upload
 from api.v1.spec import spec
 
-API_V1 = '/api/lineage'
+
+API_V1 = '/api'
 
 app.register_blueprint(group, url_prefix=API_V1)
 app.register_blueprint(resource, url_prefix=API_V1)
