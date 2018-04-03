@@ -1,4 +1,4 @@
-from flask import Flask, make_response
+from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
