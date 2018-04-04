@@ -42,7 +42,7 @@ stop(){
 start(){
   source ${PROJECT_PATH}/venv/bin/activate
   cd $PROJECT_PATH
-  gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
+  APP_ENV=Production gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
   status
 }
 

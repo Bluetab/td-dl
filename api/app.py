@@ -1,9 +1,15 @@
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
+import os
+
+
+environ = os.getenv("APP_ENV", "Development") if \
+    os.getenv("APP_ENV", "Development") in ["Development", "Production", "Testing"] \
+    else "Development"
 
 app = Flask(__name__)
 CORS(app)
-app.config.from_object('api.settings.config.DevelopmentConfig')
+app.config.from_object('api.settings.config.{}Config'.format(environ))
 
 
 @app.errorhandler(404)

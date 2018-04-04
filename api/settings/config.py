@@ -18,9 +18,9 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    APPLICATION_ROOT = '/home/ec2-user'
+    APPLICATION_ROOT = '/home/ec2-user/td_dl'
     UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
-                                 'td_dl/media/uploads')
+                                 'media/uploads')
     PORT = 4003
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
 
