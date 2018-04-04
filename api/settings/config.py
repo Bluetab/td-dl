@@ -1,4 +1,5 @@
 from api.app import app
+import os
 
 
 class Config(object):
@@ -17,12 +18,17 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    UPLOAD_FOLDER = '/home/ec2-user/td_dl/media/uploads'
+    APPLICATION_ROOT = '/home/ec2-user'
+    UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
+                                 'td_dl/media/uploads')
     PORT = 4003
+    SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
 
 
 class DevelopmentConfig(Config):
+    APPLICATION_ROOT = os.getcwd()
     DEBUG = True
+    SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
 
 
 class TestingConfig(Config):

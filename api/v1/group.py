@@ -9,18 +9,20 @@ from api.common.query import (queryMatchNode, queryMatchType, queryGetNode,
 from api.common.parser import parseBoltRecords, parseBoltPathsFlat
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
-from api.common.utils import checkparams, abort
+from api.common.utils import checkparams, abort, docstring_parameter
+from api.app import app
 
 group = Blueprint('group', __name__)
 
 
 @group.route('/groups', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def index():
     """
         Get a list of groups
 
-        swagger_from_file: api/v1/swagger/groups_index.yml
+        swagger_from_file: {0}/v1/swagger/groups_index.yml
     """
     filters = ""
     if request.args:
@@ -34,11 +36,12 @@ def index():
 
 @group.route('/groups/<int:id>', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def show(id):
     """
         Get a specified group
 
-        swagger_from_file: api/v1/swagger/groups_show.yml
+        swagger_from_file: {0}/v1/swagger/groups_show.yml
     """
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
@@ -51,11 +54,12 @@ def show(id):
 
 @group.route('/groups/<int:id>/depends', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def deps(id):
     """
         Get dependecies groups ids from a specified group
 
-        swagger_from_file: api/v1/swagger/groups_deps.yml
+        swagger_from_file: {0}/v1/swagger/groups_deps.yml
     """
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
@@ -70,11 +74,12 @@ def deps(id):
 
 @group.route('/groups/<int:id>/contains', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def contains(id):
     """
         Get contained groups ids from a specified group
 
-        swagger_from_file: api/v1/swagger/groups_contains.yml
+        swagger_from_file: {0}/v1/swagger/groups_contains.yml
     """
     with get_neo4j_db() as session:
         nodes = parseBoltRecords(session.write_transaction(queryGetNode,
@@ -89,11 +94,12 @@ def contains(id):
 
 @group.route('/groups/types', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def typeGroups():
     """
         Get groups types
 
-        swagger_from_file: api/v1/swagger/groups_types.yml
+        swagger_from_file: {0}/v1/swagger/groups_types.yml
     """
     nodes = {}
 
@@ -105,11 +111,12 @@ def typeGroups():
 
 @group.route('/groups/tree', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def treeGroups():
     """
         Get groups tree
 
-        swagger_from_file: api/v1/swagger/groups_tree.yml
+        swagger_from_file: {0}/v1/swagger/groups_tree.yml
     """
     nodes = {}
 
@@ -121,11 +128,12 @@ def treeGroups():
 
 @group.route('/groups/path', methods=['POST'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def pathGroups():
     """
         Get groups path
 
-        swagger_from_file: api/v1/swagger/groups_path.yml
+        swagger_from_file: {0}/v1/swagger/groups_path.yml
     """
     error = checkparams(["toplevel", "levels", "type_analysis"], request)
     if error:
@@ -148,11 +156,12 @@ def pathGroups():
 
 @group.route('/groups/toptype', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def topGroup():
     """
         Get group toptype
 
-        swagger_from_file: api/v1/swagger/groups_toptype.yml
+        swagger_from_file: {0}/v1/swagger/groups_toptype.yml
     """
     result = {}
     with get_neo4j_db() as session:
@@ -167,11 +176,12 @@ def topGroup():
 
 @group.route('/groups/index_top', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def indexTop():
     """
         List top groups
 
-        swagger_from_file: api/v1/swagger/groups_index_top.yml
+        swagger_from_file: {0}/v1/swagger/groups_index_top.yml
     """
     with get_neo4j_db() as session:
         groups = session.read_transaction(getTopGroups)
@@ -181,11 +191,12 @@ def indexTop():
 
 @group.route('/groups/<int:id>/index_contains', methods=['GET'])
 @auth.login_required
+@docstring_parameter(app.config["SWAGGER_ROOT"])
 def indexContains(id):
     """
         List nodes with contains relation with group id passed in url
 
-        swagger_from_file: api/v1/swagger/groups_index_contains.yml
+        swagger_from_file: {0}/v1/swagger/groups_index_contains.yml
     """
     with get_neo4j_db() as session:
         nodes = session.read_transaction(listGroupContains, id)
