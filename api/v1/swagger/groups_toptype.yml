@@ -6,9 +6,4 @@ responses:
   200:
     description: Returns the groups types
     schema:
-      properties:
-        type:
-          type: string
-          description: Group toptype
-      example:
-        types: string
+      $ref: "#/definitions/TopTypeData"

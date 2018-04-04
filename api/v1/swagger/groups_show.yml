@@ -12,4 +12,4 @@ responses:
   200:
     description: Returns the specified group
     schema:
-      $ref: "#/definitions/Group"
+      $ref: "#/definitions/GroupData"

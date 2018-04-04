@@ -6,4 +6,4 @@ responses:
   200:
     description: Returns the tree of groups
     schema:
-      $ref: "#/definitions/GroupsTreeResponse"
+      $ref: "#/definitions/GroupsTreeResponseData"

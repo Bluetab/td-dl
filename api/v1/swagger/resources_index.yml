@@ -19,12 +19,13 @@ definitions:
           type: integer
           description: Resource id (Neo4j id)
       example:
-        external_id: string
-        labels: []
-        showtree: True
-        title: string
-        type: string
-        uuid: 123
+        data:
+          external_id: string
+          labels: []
+          showtree: True
+          title: string
+          type: string
+          uuid: 123
   - schema:
       id: ResourcesResponse
       type: array
@@ -49,11 +50,22 @@ definitions:
           type: array
           description: Resources dependency ids
       example:
-        external_id: string
-        labels: []
-        object_field_name: string
-        uuid: 123
-        depends: []
+        data:
+          external_id: string
+          labels: []
+          object_field_name: string
+          uuid: 123
+          depends: []
+  - schema:
+      id: ResourceDependsData
+      properties:
+        data:
+          $ref: "#/definitions/ResourceDepends"
+  - schema:
+      id: ResourceData
+      properties:
+        data:
+          $ref: "#/definitions/Resource"
 responses:
   200:
     description: Return a list of resources

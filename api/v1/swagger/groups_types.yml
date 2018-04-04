@@ -6,4 +6,4 @@ responses:
   200:
     description: Returns the groups types
     schema:
-      $ref: "#/definitions/GroupTypes"
+      $ref: "#/definitions/GroupTypesData"

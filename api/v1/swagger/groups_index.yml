@@ -107,7 +107,8 @@ definitions:
           type: array
           description: Group types
       example:
-        types: []
+        data:
+          types: []
   - schema:
       id: GroupTree
       properties:
@@ -178,22 +179,72 @@ definitions:
           type: array
           description: Groups dependency ids
       example:
-        external_id: string
-        depth: 2
-        labels: []
-        showtree: True
-        title: string
-        type: string
-        uuid: 123
-        contains: []
-        depends: []
+        data:
+          external_id: string
+          depth: 2
+          labels: []
+          showtree: True
+          title: string
+          type: string
+          uuid: 123
+          contains: []
+          depends: []
   - schema:
       id: GroupPathResponse
       type: array
       items:
           $ref: "#/definitions/GroupPath"
+  - schema:
+      id: GroupPathResponseData
+      properties:
+        data:
+          $ref: "#/definitions/GroupPathResponse"
+  - schema:
+      id: GroupsResponseData
+      properties:
+        data:
+          $ref: "#/definitions/GroupsResponse"
+  - schema:
+      id: GroupData
+      properties:
+        data:
+          $ref: "#/definitions/Group"
+  - schema:
+      id: TopType
+      properties:
+        type:
+          type: string
+          description: Group toptype
+      example:
+        data:
+          types: string
+  - schema:
+      id: TopTypeData
+      properties:
+        data:
+          $ref: "#/definitions/TopType"
+  - schema:
+      id: GroupsTreeResponseData
+      properties:
+        data:
+          $ref: "#/definitions/GroupsTreeResponse"
+  - schema:
+      id: GroupTypesData
+      properties:
+        data:
+          $ref: "#/definitions/GroupTypes"
+  - schema:
+      id: GroupContainsData
+      properties:
+        data:
+          $ref: "#/definitions/GroupContains"
+  - schema:
+      id: GroupDependsData
+      properties:
+        data:
+          $ref: "#/definitions/GroupDepends"
 responses:
   200:
     description: Return a list of groups
     schema:
-      $ref: "#/definitions/GroupsResponse"
+      $ref: "#/definitions/GroupsResponseData"

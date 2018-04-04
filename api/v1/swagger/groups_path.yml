@@ -28,4 +28,4 @@ responses:
   200:
     description: Returns the groups paths
     schema:
-      $ref: "#/definitions/GroupPathResponse"
+      $ref: "#/definitions/GroupPathResponseData"

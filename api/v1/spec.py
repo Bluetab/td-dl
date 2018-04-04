@@ -1,5 +1,4 @@
 from api.app import app
-from api.settings.auth import auth
 from flask import Blueprint, jsonify
 from flask_swagger import swagger
 
@@ -23,7 +22,7 @@ def specSwagger():
             "in": "header",
         }
     }
-    swag['info']['security']= [
+    swag['info']['security'] = [
         {
             "bearer": []
         }

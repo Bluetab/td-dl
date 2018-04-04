@@ -12,4 +12,4 @@ responses:
   200:
     description: Returns the specified resource
     schema:
-      $ref: "#/definitions/Resource"
+      $ref: "#/definitions/ResourceData"
