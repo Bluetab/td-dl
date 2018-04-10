@@ -12,9 +12,9 @@ definitions:
         labels:
           type: array
           description: Resource labels
-        title:
+        name:
           type: string
-          description: Resource title
+          description: Resource name
         uuid:
           type: integer
           description: Resource id (Neo4j id)
@@ -23,7 +23,7 @@ definitions:
           external_id: string
           labels: []
           showtree: True
-          title: string
+          name: string
           type: string
           uuid: 123
   - schema:
@@ -40,9 +40,9 @@ definitions:
         labels:
           type: array
           description: Resource labels
-        title:
+        name:
           type: string
-          description: Resource title
+          description: Resource name
         uuid:
           type: integer
           description: Resource id (Neo4j id)
@@ -53,7 +53,7 @@ definitions:
         data:
           external_id: string
           labels: []
-          object_field_name: string
+          name: string
           uuid: 123
           depends: []
   - schema:

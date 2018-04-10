@@ -74,7 +74,7 @@ def getGroupDependencies(records, session):
         arrayGroups = parseBoltRecords(queryGetGroupsFromResource(session,
                                                                   node['uuid'])
                                        )
-        node['group'] = [x['title'] for x in arrayGroups]
+        node['group'] = [x['name'] for x in arrayGroups]
 
     return records
 
