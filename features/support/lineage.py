@@ -36,11 +36,11 @@ def createFilesAndUpload(context):
             df_relations = appendDataFrame(df_relations, df_temp)
 
     df_resources.to_csv(constants.FILENAME_RESOURCES,
-                        index=None, sep=';', encoding='utf-8')
+                        index=None, sep='¬', encoding='utf-8')
     df_groups.to_csv(constants.FILENAME_GROUPS,
-                     index=None, sep=';', encoding='utf-8')
+                     index=None, sep='¬', encoding='utf-8')
     df_relations.to_csv(constants.FILENAME_RELATIONS,
-                        index=None, sep=';', encoding='utf-8')
+                        index=None, sep='¬', encoding='utf-8')
 
     files = [
         (constants.NODES,

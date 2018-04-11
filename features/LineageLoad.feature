@@ -41,7 +41,7 @@ Feature: Load Data Lineage using API
       | Relations   |     |                       | DEPENDS        |                                    |          | 12        | 2         |
       | Relations   |     |                       | DEPENDS        |                                    |          | 2         | 11        |
       | Relations   |     |                       | DEPENDS        |                                    |          | 11        | 1         |
-    Then the system returns a result with code "Created"
+    Then the system returns a result with code "No Content"
     And "app-admin" is able to view following "lineage" for Resource with Id "3" and top level Group type "System"
       | Id  | Name                  | Type           | Description                        | Contains | Depends |
       | 3   | Third Field           | Field          | This is Third calculated field     |          | 12      |

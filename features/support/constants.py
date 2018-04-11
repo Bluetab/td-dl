@@ -7,7 +7,7 @@ NODES = "nodes"
 RELS = "rels"
 
 API_SESSIONS = "http://localhost:4003/api/sessions"
-API_UPLOAD = "http://localhost:4003/api/upload"
+API_UPLOAD = "http://localhost:4003/api/metadata"
 API_PATH = "http://localhost:4003/api/path"
 API_RESOURCES = "http://localhost:4003/api/resources"
 API_GROUPS = "http://localhost:4003/api/groups"
@@ -15,7 +15,7 @@ API_GROUPS = "http://localhost:4003/api/groups"
 HEADERS = {'content-type': 'application/json'}
 USER_APP_ADMIN = {"user": {"user_name": "app-admin", "password": "mypass"}}
 
-MAP_RESPONSE = {201: 'Created'}
+MAP_RESPONSE = {204: 'No Content'}
 
 FILENAME_GROUPS = "groups.csv"
 FILENAME_RESOURCES = "resources.csv"

@@ -6,15 +6,15 @@ from api.app import app
 import subprocess
 import os
 
-upload = Blueprint('upload', __name__)
+metadata = Blueprint('metadata', __name__)
 
 UPLOAD_FOLDER = app.config['UPLOAD_FOLDER']
 ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
 
 
-@upload.route('/upload', methods=['POST'])
+@metadata.route('/metadata', methods=['POST'])
 @auth.login_required
-def uploadFiles():
+def upload():
 
     list_filenames = []
 
@@ -25,10 +25,10 @@ def uploadFiles():
                 )
 
     string_concat = ";".join(list_filenames)
-    status = subprocess.call(['./scripts/importDBNeo4j.sh', string_concat])
+    status = subprocess.call(['./scripts/importDBNeo4j.sh', string_concat, "¬"])
     if status != 0:
         abort(422, {'message': "unprocessable entity"})
-    return jsonify({"data": {'message': "uploaded"}}), 201
+    return "", 204
 
 
 def allowed_file(filename):
