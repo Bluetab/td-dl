@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from api.common.query import searchResourceReg
 from api.settings.db import get_neo4j_db

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from api.common.parser import parseBoltPathsFlat, parseBoltPathsTree
 from api.common.query import queryPath, getUuidsFromNodes

@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 from support import constants
+from api.app import app
 import requests
 import pandas
 import jwt
-from api.app import app
+import csv
 
 
 def createFilesAndUpload(context):
@@ -36,11 +38,11 @@ def createFilesAndUpload(context):
             df_relations = appendDataFrame(df_relations, df_temp)
 
     df_resources.to_csv(constants.FILENAME_RESOURCES,
-                        index=None, sep='¬', encoding='utf-8')
+                        index=None, sep=';', encoding='utf-8', quoting=csv.QUOTE_ALL)
     df_groups.to_csv(constants.FILENAME_GROUPS,
-                     index=None, sep='¬', encoding='utf-8')
+                     index=None, sep=';', encoding='utf-8', quoting=csv.QUOTE_ALL)
     df_relations.to_csv(constants.FILENAME_RELATIONS,
-                        index=None, sep='¬', encoding='utf-8')
+                        index=None, sep=';', encoding='utf-8', quoting=csv.QUOTE_ALL)
 
     files = [
         (constants.NODES,

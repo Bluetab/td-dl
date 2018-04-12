@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from api.settings.auth import auth
@@ -25,7 +26,7 @@ def upload():
                 )
 
     string_concat = ";".join(list_filenames)
-    status = subprocess.call(['./scripts/importDBNeo4j.sh', string_concat, "¬"])
+    status = subprocess.call(['./scripts/importDBNeo4j.sh', string_concat])
     if status != 0:
         abort(422, {'message': "unprocessable entity"})
     return "", 204

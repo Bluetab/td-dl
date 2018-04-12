@@ -1,8 +1,8 @@
 #! /bin/bash
 
 LIST_FILES="$1"
-DELIMITER=$2
-ARRAY_DELIMITER=$3
+DELIMITER=${2:-;}
+ARRAY_DELIMITER=${2:-|}
 
 main(){
 
@@ -15,8 +15,8 @@ main(){
 	done
 	IFS=$OLDIFS
 
-  if [[ ${DELIMITER:-;} == ${ARRAY_DELIMITER:-|} ]]; then
-    echo "Character ${ARRAY_DELIMITER:-|} specified by array delimiter is the same as specified by delimiter"
+  if [[ ${DELIMITER} == ${ARRAY_DELIMITER} ]]; then
+    echo "Character ${ARRAY_DELIMITER} specified by array delimiter is the same as specified by delimiter"
     exit 1
   fi
 
@@ -45,7 +45,7 @@ main(){
       for fileRels in $files_rels; do
       	command_exec+="--relationships ${fileRels} "
       done
-      command_exec+="--multiline-fields true --delimiter \"${DELIMITER:-;}\" --array-delimiter \"${ARRAY_DELIMITER:-|}\" --ignore-missing-nodes"
+      command_exec+="--multiline-fields true --delimiter \"${DELIMITER}\" --array-delimiter \"${ARRAY_DELIMITER}\" --ignore-missing-nodes"
       echo "${command_exec}" | sh
       importStatus=$?
       if [[ ${importStatus} -ne 0 ]]; then

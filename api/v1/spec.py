@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from api.app import app
 from flask import Blueprint, jsonify
 from flask_swagger import swagger

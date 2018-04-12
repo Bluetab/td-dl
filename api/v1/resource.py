@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify, request
 from api.common.parser import parseBoltRecords
 from api.common.query import (queryMatchNode, queryGetNode,
