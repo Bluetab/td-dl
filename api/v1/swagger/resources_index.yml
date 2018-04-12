@@ -3,69 +3,64 @@ Get a list of resources
 tags:
   - resources
 definitions:
-  - schema:
-      id: Resource
-      properties:
-        external_id:
-          type: string
-          description: External identification
-        labels:
-          type: array
-          description: Resource labels
-        name:
-          type: string
-          description: Resource name
-        uuid:
-          type: integer
-          description: Resource id (Neo4j id)
-      example:
-        data:
-          external_id: string
-          labels: []
-          showtree: True
-          name: string
-          type: string
-          uuid: 123
-  - schema:
-      id: ResourcesResponse
-      type: array
-      items:
+  Resource:
+    properties:
+      external_id:
+        type: string
+        description: External identification
+      labels:
+        type: array
+        description: Resource labels
+      name:
+        type: string
+        description: Resource name
+      uuid:
+        type: integer
+        description: Resource id (Neo4j id)
+    example:
+      data:
+        external_id: string
+        labels: []
+        showtree: True
+        name: string
+        type: string
+        uuid: 123
+  ResourcesResponse:
+    type: array
+    items:
+      $ref: "#/definitions/Resource"
+  ResourceDepends:
+    properties:
+      external_id:
+        type: string
+        description: External identification
+      labels:
+        type: array
+        description: Resource labels
+      name:
+        type: string
+        description: Resource name
+      uuid:
+        type: integer
+        description: Resource id (Neo4j id)
+      depends:
+        type: array
+        description: Resources dependency ids
+    example:
+      data:
+        external_id: string
+        labels: []
+        name: string
+        uuid: 123
+        depends: []
+  ResourceDependsData:
+    properties:
+      data:
+        $ref: "#/definitions/ResourceDepends"
+  ResourceData:
+    properties:
+      data:
         $ref: "#/definitions/Resource"
-  - schema:
-      id: ResourceDepends
-      properties:
-        external_id:
-          type: string
-          description: External identification
-        labels:
-          type: array
-          description: Resource labels
-        name:
-          type: string
-          description: Resource name
-        uuid:
-          type: integer
-          description: Resource id (Neo4j id)
-        depends:
-          type: array
-          description: Resources dependency ids
-      example:
-        data:
-          external_id: string
-          labels: []
-          name: string
-          uuid: 123
-          depends: []
-  - schema:
-      id: ResourceDependsData
-      properties:
-        data:
-          $ref: "#/definitions/ResourceDepends"
-  - schema:
-      id: ResourceData
-      properties:
-        data:
-          $ref: "#/definitions/Resource"
 responses:
   200:
     description: Return a list of resources

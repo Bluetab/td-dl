@@ -6,12 +6,12 @@ ARRAY_DELIMITER=${2:-|}
 
 main(){
 
-  sudo rm /var/lib/neo4j/import/*
+  sudo rm /var/lib/neo4j_test/neo4j/import/*
 
   OLDIFS=$IFS
 	IFS=';'
 	for file in ${LIST_FILES}; do
-    sudo cp ${file} /var/lib/neo4j/import/
+    sudo cp ${file} /var/lib/neo4j_test/neo4j/import/
 	done
 	IFS=$OLDIFS
 
@@ -20,25 +20,25 @@ main(){
     exit 1
   fi
 
-  files_nodes=`ls -1 /var/lib/neo4j/import/nodes_*`
-  files_rels=`ls -1 /var/lib/neo4j/import/rels_*`
+  files_nodes=`ls -1 /var/lib/neo4j_test/neo4j/import/nodes_*`
+  files_rels=`ls -1 /var/lib/neo4j_test/neo4j/import/rels_*`
 
   if [[ ! -z "${files_nodes:-}" || ! -z "${files_rels:-}" ]]; then
 
-    sudo rm -rvf /var/lib/neo4j/data/databases/*.bck
-    sudo neo4j stop
+    sudo rm -rvf /var/lib/neo4j_test/neo4j/data/databases/*.bck
+    /var/lib/neo4j_test/neo4j/bin/neo4j stop
     check_stop
     process=0
 
-    if [[ -d "/var/lib/neo4j/data/databases/graph.db" ]]; then
-      sudo cp -R /var/lib/neo4j/data/databases/graph.db \
-        /var/lib/neo4j/data/databases/graph.db.bck \
-        && sudo rm -rvf /var/lib/neo4j/data/databases/graph.db
+    if [[ -d "/var/lib/neo4j_test/neo4j/data/databases/graph.db" ]]; then
+      sudo cp -R /var/lib/neo4j_test/neo4j/data/databases/graph.db \
+        /var/lib/neo4j_test/neo4j/data/databases/graph.db.bck \
+        && sudo rm -rvf /var/lib/neo4j_test/neo4j/data/databases/graph.db
       process=$?
     fi
 
     if [[ ${process} -eq 0 ]]; then
-      command_exec="sudo neo4j-admin import --database graph.db "
+      command_exec="sudo /var/lib/neo4j_test/neo4j/bin/neo4j-admin import --database graph.db "
       for fileNode in $files_nodes; do
       	command_exec+="--nodes ${fileNode} "
       done
@@ -49,11 +49,11 @@ main(){
       echo "${command_exec}" | sh
       importStatus=$?
       if [[ ${importStatus} -ne 0 ]]; then
-        sudo rm -rvf /var/lib/neo4j/data/databases/graph.db
-        sudo cp -R /var/lib/neo4j/data/databases/graph.db.bck /var/lib/neo4j/data/databases/graph.db
+        sudo rm -rvf /var/lib/neo4j_test/neo4j/data/databases/graph.db
+        sudo cp -R /var/lib//neo4j_test/neo4j/data/databases/graph.db.bck /var/lib/neo4j/data/databases/graph.db
       fi
     fi
-    sudo neo4j start
+    /var/lib/neo4j_test/neo4j/bin/neo4j start
     wait_for_neo4j
   fi
 }
@@ -65,15 +65,15 @@ function check_stop {
 
 # wait for neo4j
 function wait_for_neo4j {
-  while ! nc -z localhost 7687 ; do
+  while ! nc -z localhost 8687 ; do
     echo "Neo4j is unavailable - sleeping"
-    sudo neo4j status
+    /var/lib/neo4j_test/neo4j/bin/neo4j status
     sleep 1
   done
 
-  while ! nc -z localhost 7474 ; do
+  while ! nc -z localhost 8474 ; do
     echo "Neo4j is unavailable - sleeping"
-    sudo neo4j status
+    /var/lib/neo4j_test/neo4j/bin/neo4j status
     sleep 1
   done
 }
