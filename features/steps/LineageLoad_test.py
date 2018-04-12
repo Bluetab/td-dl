@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from behave import when, then, given
+from behave import when, then, given, fixture
 from support import constants
 from support import lineage
 import requests
 import json
+
 
 @when('"{username}" tries to load lineage data with following data')
 def step_impl(context, username):

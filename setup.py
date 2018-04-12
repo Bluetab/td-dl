@@ -1,5 +1,18 @@
 from setuptools import setup
 
+PATH_REQUIREMENTS="requirements/"
+KEY_COMMON="common"
+KEY_DEV="dev"
+KEY_TEST="test"
+FILE_REQUIREMENTS={KEY_DEV : "requirements-dev.txt",
+    KEY_COMMON : "requirements.txt", KEY_TEST : "requirements-test.txt",
+    }
+
+REQUIREMENTS={}
+for key, name_file in FILE_REQUIREMENTS.items():
+    with open(PATH_REQUIREMENTS + name_file) as f:
+        REQUIREMENTS[key] = f.read().splitlines()
+
 setup(
     name='td_dl',
     version='0.0.1',
@@ -9,25 +22,13 @@ setup(
     license='Apache2 License',
     keywords=['td_dl', 'api', 'neo4j'],
     packages=['api', 'api.v1', 'api.common', 'api.settings'],
+    test_suite='nose2.collector.collector',
+    tests_require=[REQUIREMENTS[KEY_TEST]],
     include_package_data=True,
-    install_requires=[
-        'Fabric3==1.13.1.post1',
-        'Flask==0.12.2',
-        'Flask-Cors==3.0.2',
-        'Flask-HTTPAuth==3.2.3',
-        'flask-swagger==0.2.13',
-        'gunicorn==19.7.1',
-        'neo4j-driver==1.3.0',
-        'nose2==0.7.3',
-        'nose2==0.7.3',
-        'PyJWT==1.5.3',
-        'requests==2.18.4',
-        'tornado==4.5.2',
-        'behave==1.2.6'
-    ],
+    install_requires=REQUIREMENTS[KEY_COMMON],
     extras_require={
         'dev': [
-            'pandas'
+            REQUIREMENTS[KEY_DEV]
         ]
     }
 )

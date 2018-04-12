@@ -15,7 +15,7 @@ sshpass -p "password" ssh-copy-id -o StrictHostKeyChecking=no fabric@localhost |
 rm -rf /working_code/venv || exit 1
 virtualenv -p python3.6 /working_code/venv
 source /working_code/venv/bin/activate
-pip install -r /working_code/requirements.txt
+pip install -e .
 
 ./add_deployment_keys.sh || exit 1
 
