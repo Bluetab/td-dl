@@ -9,9 +9,11 @@ FILE_REQUIREMENTS={KEY_DEV : "requirements-dev.txt",
     }
 
 REQUIREMENTS={}
-for key, name_file in FILE_REQUIREMENTS.items():
-    with open(PATH_REQUIREMENTS + name_file) as f:
+def get_requirements(key):
+    with open(PATH_REQUIREMENTS + FILE_REQUIREMENTS[key]) as f:
         REQUIREMENTS[key] = f.read().splitlines()
+
+    return REQUIREMENTS[key]
 
 setup(
     name='td_dl',
@@ -23,12 +25,12 @@ setup(
     keywords=['td_dl', 'api', 'neo4j'],
     packages=['api', 'api.v1', 'api.common', 'api.settings'],
     test_suite='nose2.collector.collector',
-    tests_require=[REQUIREMENTS[KEY_TEST]],
+    tests_require=[get_requirements(KEY_TEST)],
     include_package_data=True,
-    install_requires=REQUIREMENTS[KEY_COMMON],
+    install_requires=get_requirements(KEY_COMMON),
     extras_require={
         'dev': [
-            REQUIREMENTS[KEY_DEV]
+            get_requirements(KEY_DEV)
         ]
     }
 )
