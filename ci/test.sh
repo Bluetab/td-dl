@@ -37,7 +37,6 @@ echo "Starting tests"
 python setup.py test || exit 1
 
 echo "Starting behave"
-python run.py >test.log 2>&1 &
 behave || exit 1
 
 echo "Test step finish successfully"
