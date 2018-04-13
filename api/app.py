@@ -66,6 +66,7 @@ from api.v1.resource import resource
 from api.v1.path import path
 from api.v1.search import search
 from api.v1.metadata import metadata
+from api.v1.writeNeo4j import writeNeo4j
 
 API_V1 = '/api'
 
@@ -74,3 +75,4 @@ app.register_blueprint(resource, url_prefix=API_V1)
 app.register_blueprint(path, url_prefix=API_V1)
 app.register_blueprint(search, url_prefix=API_V1)
 app.register_blueprint(metadata, url_prefix=API_V1)
+app.register_blueprint(writeNeo4j, url_prefix=API_V1)

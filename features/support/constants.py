@@ -12,6 +12,7 @@ API_UPLOAD = "http://localhost:4003/api/metadata"
 API_PATH = "http://localhost:4003/api/path"
 API_RESOURCES = "http://localhost:4003/api/resources"
 API_GROUPS = "http://localhost:4003/api/groups"
+API_NEO4JQUERY = "http://localhost:4003/api/writeNeo4j"
 
 HEADERS = {'content-type': 'application/json'}
 USER_APP_ADMIN = {"user": {"user_name": "app-admin", "password": "mypass"}}

@@ -123,3 +123,13 @@ def buildToken(user):
                        app.config['SECRET_KEY'],
                        app.config['ALGORITHM']).decode("utf-8")
     return token
+
+# def buildDeleteQuery(node_id):
+#     def queryMatchNode(tx, node, filters="", limit=25):
+#         query = """
+#                 MATCH (n:{node})
+#                 {filters}
+#                 RETURN n LIMIT {limit}
+#                 """.format(node=node, filters=filters, limit=limit)
+#         records = tx.run(query)
+#         return records
