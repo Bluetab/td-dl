@@ -1,2 +1,2 @@
 include api/v1/swagger/*
-include requirements/requirements.txt
+include requirements/*

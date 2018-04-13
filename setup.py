@@ -12,7 +12,6 @@ REQUIREMENTS={}
 def get_requirements(key):
     with open(PATH_REQUIREMENTS + FILE_REQUIREMENTS[key]) as f:
         REQUIREMENTS[key] = f.read().splitlines()
-
     return REQUIREMENTS[key]
 
 setup(
