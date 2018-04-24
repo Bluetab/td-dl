@@ -9,7 +9,6 @@ class Config(object):
     JWT_AUD = 'tdauth'
     ALGORITHM = 'HS512'
     UPLOAD_FOLDER = app.root_path + '/media/uploads'
-    PATH_NEO4J = '/home/' + os.environ.get("USER") + '/neo4j/lineage'
     ALLOWED_EXTENSIONS = set(['csv', 'zip'])
     NEO4J_HOST = 'localhost'
     NEO4J_PORT = 7687
@@ -18,6 +17,7 @@ class Config(object):
     EXTERNAL_HOST = 'localhost'
     EXTERNAL_PORT = 4003
     SWAGGER_HOST = "{}:{}".format(EXTERNAL_HOST, EXTERNAL_PORT)
+
 
 class ProductionConfig(Config):
     APPLICATION_ROOT = '/home/ec2-user/td_dl'
@@ -30,12 +30,17 @@ class ProductionConfig(Config):
     EXTERNAL_PORT = 8003
     SWAGGER_HOST = "{}:{}".format(EXTERNAL_HOST, EXTERNAL_PORT)
 
+
 class DevelopmentConfig(Config):
     APPLICATION_ROOT = os.getcwd()
     DEBUG = True
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
+    PATH_NEO4J = '/home/' + os.environ.get("USER", "ec2-user") + '/neo4j/lineage'
 
 
 class TestingConfig(Config):
+    APPLICATION_ROOT = os.getcwd()
+    SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
+    PATH_NEO4J = '/neo4j'
     TESTING = True
-    PORT = 4003
+    DEBUG = True

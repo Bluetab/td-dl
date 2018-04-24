@@ -11,15 +11,15 @@ function wait_for_neo4j {
 }
 
 echo "Starting neo4j service"
-service neo4j start
+/neo4j/bin/neo4j start
 
 wait_for_neo4j
 
-rm /var/lib/neo4j/data/dbms/auth
+rm /neo4j/data/dbms/auth
 
-/usr/bin/neo4j-admin set-initial-password bluetab
+/neo4j/bin/neo4j-admin set-initial-password bluetab
 
-service neo4j restart
+/neo4j/bin/neo4j restart
 
 wait_for_neo4j
 
@@ -36,6 +36,7 @@ pip install -e .[dev]
 echo "Starting tests"
 python setup.py test || exit 1
 
+export APP_ENV=Testing
 echo "Starting behave"
 behave || exit 1
 
