@@ -12,7 +12,7 @@ from flasgger import swag_from
 resource = Blueprint('resource', __name__)
 
 
-@resource.route('/resources', methods=['GET'])
+@resource.route('/nodes/resources', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/resources_index.yml')
@@ -32,7 +32,7 @@ def index():
         return jsonify({"data": nodes}), 200
 
 
-@resource.route('/resources/<int:id>', methods=['GET'])
+@resource.route('/nodes/resources/<int:id>', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/resources_show.yml')
@@ -51,7 +51,7 @@ def show(id):
         return jsonify({"data": nodes[0]}), 200
 
 
-@resource.route('/resources/<int:id>/depends', methods=['GET'])
+@resource.route('/nodes/resources/<int:id>/depends', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/resources_deps.yml')

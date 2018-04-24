@@ -17,7 +17,7 @@ from flasgger import swag_from
 group = Blueprint('group', __name__)
 
 
-@group.route('/groups', methods=['GET'])
+@group.route('/nodes/groups', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_index.yml')
@@ -37,7 +37,7 @@ def index():
         return jsonify({"data": nodes}), 200
 
 
-@group.route('/groups/<int:id>', methods=['GET'])
+@group.route('/nodes/groups/<int:id>', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_show.yml')
@@ -56,7 +56,7 @@ def show(id):
         return jsonify({"data": nodes[0]}), 200
 
 
-@group.route('/groups/<int:id>/depends', methods=['GET'])
+@group.route('/nodes/groups/<int:id>/depends', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_deps.yml')
@@ -77,7 +77,7 @@ def deps(id):
         return jsonify({"data": nodes}), 200
 
 
-@group.route('/groups/<int:id>/contains', methods=['GET'])
+@group.route('/nodes/groups/<int:id>/contains', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_contains.yml')
@@ -98,7 +98,7 @@ def contains(id):
         return jsonify({"data": nodes}), 200
 
 
-@group.route('/groups/types', methods=['GET'])
+@group.route('/nodes/groups/types', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_types.yml')
@@ -116,7 +116,7 @@ def typeGroups():
         return jsonify({"data": nodes}), 200
 
 
-@group.route('/groups/tree', methods=['GET'])
+@group.route('/nodes/groups/tree', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_tree.yml')
@@ -134,7 +134,7 @@ def treeGroups():
         return jsonify({"data": nodes}), 200
 
 
-@group.route('/groups/path', methods=['POST'])
+@group.route('/nodes/groups/path', methods=['POST'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_path.yml')
@@ -163,7 +163,7 @@ def pathGroups():
     return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 
 
-@group.route('/groups/toptype', methods=['GET'])
+@group.route('/nodes/groups/toptype', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_toptype.yml')
@@ -184,7 +184,7 @@ def topGroup():
         return jsonify({"data": result}), 200
 
 
-@group.route('/groups/index_top', methods=['GET'])
+@group.route('/nodes/groups/index_top', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_index_top.yml')
@@ -200,7 +200,7 @@ def indexTop():
         return jsonify({"data": groups}), 200
 
 
-@group.route('/groups/<int:id>/index_contains', methods=['GET'])
+@group.route('/nodes/groups/<int:id>/index_contains', methods=['GET'])
 @auth.login_required
 @docstring_parameter(app.config["SWAGGER_ROOT"])
 @swag_from('swagger/groups_index_contains.yml')

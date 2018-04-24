@@ -11,6 +11,7 @@ metadata = Blueprint('metadata', __name__)
 
 UPLOAD_FOLDER = app.config['UPLOAD_FOLDER']
 ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
+PATH_NEO4J = app.config['PATH_NEO4J']
 
 
 @metadata.route('/metadata', methods=['POST'])
@@ -26,7 +27,8 @@ def upload():
                 )
 
     string_concat = ";".join(list_filenames)
-    status = subprocess.call(['./scripts/importDBNeo4j.sh', string_concat])
+    status = subprocess.call(['./scripts/importDBNeo4j.sh',
+        string_concat, PATH_NEO4J])
     if status != 0:
         abort(422, {'message': "unprocessable entity"})
     return "", 204

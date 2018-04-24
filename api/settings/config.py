@@ -9,6 +9,7 @@ class Config(object):
     JWT_AUD = 'tdauth'
     ALGORITHM = 'HS512'
     UPLOAD_FOLDER = app.root_path + '/media/uploads'
+    PATH_NEO4J = '/home/' + os.environ.get("USER") + '/neo4j/lineage'
     ALLOWED_EXTENSIONS = set(['csv', 'zip'])
     NEO4J_HOST = 'localhost'
     NEO4J_PORT = 7687
@@ -23,6 +24,7 @@ class ProductionConfig(Config):
     UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
                                  'media/uploads')
     PORT = 4003
+    PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
     EXTERNAL_HOST = 'truedat.bluetab.net'
     EXTERNAL_PORT = 8003
