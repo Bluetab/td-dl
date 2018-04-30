@@ -27,7 +27,7 @@ class ProductionConfig(Config):
     PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
     EXTERNAL_HOST = 'truedat.bluetab.net'
-    EXTERNAL_PORT = 8003
+    EXTERNAL_PORT = 8002
     SWAGGER_HOST = "{}:{}".format(EXTERNAL_HOST, EXTERNAL_PORT)
 
 
