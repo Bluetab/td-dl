@@ -25,6 +25,7 @@ class ProductionConfig(Config):
                                  'media/uploads')
     PORT = 4003
     PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
+    NEO4J_HOST = 'truedat.bluetab.net'
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
     EXTERNAL_HOST = 'truedat.bluetab.net'
     EXTERNAL_PORT = 8002
