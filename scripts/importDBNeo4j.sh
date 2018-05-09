@@ -7,7 +7,7 @@ ARRAY_DELIMITER=${4:-|}
 
 main(){
 
-  rm ${PATH_NEO4J}/import/*
+  rm -f ${PATH_NEO4J}/import/*
 
   OLDIFS=$IFS
 	IFS=';'

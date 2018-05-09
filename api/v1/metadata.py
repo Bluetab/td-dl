@@ -25,12 +25,13 @@ def upload():
             list_filenames.extend(
                 checkFiles(request.files.getlist(key_type_file), key_type_file)
                 )
-
+    if not list_filenames:
+        return abort(422, {'message': "unprocessable entity"})
     string_concat = ";".join(list_filenames)
     status = subprocess.call(['./scripts/importDBNeo4j.sh',
         string_concat, PATH_NEO4J])
     if status != 0:
-        abort(422, {'message': "unprocessable entity"})
+        return abort(422, {'message': "unprocessable entity"})
     return "", 204
 
 

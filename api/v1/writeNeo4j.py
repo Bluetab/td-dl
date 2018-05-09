@@ -21,5 +21,4 @@ def writeQuery():
         return abort(400, {'Exception message': exception.message})
     except:
         return abort(400, {'Exception message': 'Unknown Error'})
-
-    return jsonify({'Query Ok': 204})
+    return "", 204
