@@ -14,7 +14,7 @@ ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
 PATH_NEO4J = app.config['PATH_NEO4J']
 
 
-@metadata.route('/metadata', methods=['POST'])
+@metadata.route('/td_dl/metadata', methods=['POST'])
 @auth.login_required
 def upload():
 
