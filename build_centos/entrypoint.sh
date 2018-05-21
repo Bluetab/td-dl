@@ -4,6 +4,10 @@ cp -R /code /working_code
 chmod -R 777 /working_code
 cd /working_code
 rm -rf /working_code/venv/
+
+. ./build_centos/env.conf
+./build_centos/create_secrets_configuration.sh || exit 1
+
 virtualenv -p python3.6 /working_code/venv
 python3.6 setup.py sdist --formats=gztar
 FILENAME=`python3.6 setup.py --fullname`
