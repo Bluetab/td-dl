@@ -42,7 +42,7 @@ Feature: Load Data Lineage using API
       | Relations   |     |                       | DEPENDS        |                                    |          | 2         | 11        |
       | Relations   |     |                       | DEPENDS        |                                    |          | 11        | 1         |
     Then the system returns a result with code "No Content"
-    And "app-admin" is able to view following "lineage" for Resource with Id "3" and top level Group type "System"
+    And "app-admin" is able to view following "impact" for Resource with Id "3" and top level Group type "System"
       | Id  | Name                  | Type           | Description                        | Contains | Depends |
       | 3   | Third Field           | Field          | This is Third calculated field     |          | 12      |
       | 12  | Second Transformation | Transformation | This is the second transformation  |          | 4,2     |
@@ -75,7 +75,7 @@ Feature: Load Data Lineage using API
       | Relations   |     |                       | DEPENDS        |                                    |          | 12        | 2         |
       | Relations   |     |                       | DEPENDS        |                                    |          | 2         | 11        |
       | Relations   |     |                       | DEPENDS        |                                    |          | 11        | 1         |
-    When "app-admin" tries to get the "impact" analysis for Resource with Id "1" and top level Group type "System"
+    When "app-admin" tries to get the "lineage" analysis for Resource with Id "1" and top level Group type "System"
     Then he receives following lineage information:
       | Id  | Name                  | Type           | Description                        | Contains | Depends |
       | 1   | First Field           | Field          | This is First calculated field     |          | 11      |
