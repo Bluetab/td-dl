@@ -1,6 +1,7 @@
 stages:
   - test
   - deploy
+  - pushToECR
 
 test:
   stage: test
@@ -18,5 +19,26 @@ deploy:
     - export PRODUCTION_HOST=$(echo $PRODUCTION_HOST | sed -e "s/\//\\\\\//g")
     - export PRODUCTION_USER=$(echo $PRODUCTION_USER | sed -e "s/\//\\\\\//g")
     - docker run --rm -e NEO4J_PASSWORD=$NEO4J_PASSWORD -e PRODUCTION_HOST=$PRODUCTION_HOST -e PRODUCTION_USER=$PRODUCTION_USER -e PRODUCTION_PEM="$PRODUCTION_PEM" -e GUARDIAN_SECRET_KEY="$GUARDIAN_SECRET_KEY" -e USER=$USER -e BUILD_AT=$BUILD_AT -e TERM=$TERM -v $(pwd):/code:ro -w /code --entrypoint=/code/ci/deploy.sh bluetab/amazonlinux-python3-neo4j:20180123125610087277324
+  only:
+    - master
+
+pushToECR:
+  stage: pushToECR
+  script:
+    - git branch -f master HEAD
+    - export VERSION=$(cat version)
+    - export PROJECT_NAME=${PWD##*/}
+    - export AWS_ACCESS_KEY_ID=$(echo $AWS_ACCESS_KEY_ID | sed -e "s/\//\\\\\//g")
+    - export AWS_SECRET_ACCESS_KEY=$(echo $AWS_SECRET_ACCESS_KEY | sed -e "s/\//\\\\\//g")
+    - export AWS_DEFAULT_REGION=$(echo $AWS_DEFAULT_REGION | sed -e "s/\//\\\\\//g")
+    - docker build -t bluetab-truedat/$PROJECT_NAME:latest .
+    - docker run --rm -t $(tty &>/dev/null && echo "-i") -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" mesosphere/aws-cli ecr get-login --no-include-email --region $AWS_DEFAULT_REGION | awk '{ sub("\r$", ""); print }' > output
+    - bash -f output
+    - export ECR=$(cat output | egrep -o 'https?://[^ ]+' | awk -F/ '{print $3}')
+    - docker tag bluetab-truedat/$PROJECT_NAME:latest $ECR/bluetab-truedat/$PROJECT_NAME:latest
+    - docker tag bluetab-truedat/$PROJECT_NAME:latest $ECR/bluetab-truedat/$PROJECT_NAME:${VERSION}
+    - docker push $ECR/bluetab-truedat/$PROJECT_NAME:latest
+    - docker push $ECR/bluetab-truedat/$PROJECT_NAME:${VERSION}
+    - rm output
   only:
     - master
