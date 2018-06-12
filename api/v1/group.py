@@ -211,6 +211,9 @@ def indexContains(id):
         file: {0}/v1/swagger/groups_index_contains.yml
     """
     with get_neo4j_db() as session:
+        # We could have several names for the same node.
+        # We have to query first all the nodes having the same
+        # name as the node queried in the request
         nodes = session.read_transaction(listGroupContains, id)
         nodes = parseBoltRecords(nodes)
         return jsonify({"data": nodes}), 200

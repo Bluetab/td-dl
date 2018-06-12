@@ -218,7 +218,10 @@ def getTopGroups(tx):
     query = """
         MATCH (n:Group)-[:CONTAINS*]->()
         WHERE not ((n)<-[:CONTAINS]-())
-        RETURN DISTINCT n
+        AND not n.select_hidden
+        WITH count(n.name) as cnt, n.name as name, 
+        collect(n)[0] AS n 
+        RETURN n
     """
     records = tx.run(query)
     return records
@@ -234,8 +237,13 @@ def getTopGroupType(tx):
 
 def listGroupContains(tx, group_id):
     query = """
-        MATCH (x:Group)-[:CONTAINS]->(n)
+        MATCH (x:Group)
         WHERE id(x)={group_id}
+        WITH x.name AS name
+        MATCH(x:Group{{name:name}})-[:CONTAINS]->(n)
+        WHERE not n.select_hidden
+        WITH count(n.name) as cnt, n.name as name, 
+        collect(n)[0] AS n
         RETURN DISTINCT n""".format(group_id=group_id)
     records = tx.run(query)
     return records

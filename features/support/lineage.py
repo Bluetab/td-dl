@@ -19,6 +19,7 @@ def createFilesAndUpload(context):
                 'external_id:ID': [row["Id"]],
                 'name': [row["Name"]], 'type': [row["Type"]],
                 'description': [row["Description"]],
+                'select_hidden:boolean': [row["Select Hidden"]],
                 ':LABEL': ['Resource']})
             df_resources = appendDataFrame(df_resources, df_temp)
 
@@ -27,7 +28,7 @@ def createFilesAndUpload(context):
                 'external_id:ID': [row["Id"]],
                 'name': [row["Name"]], 'type': [row["Type"]],
                 'description': [row["Description"]],
-                'showtree': [row["Showtree"]],
+                'select_hidden:boolean': [row["Select Hidden"]],
                 ':LABEL': ['Group']})
             df_groups = appendDataFrame(df_groups, df_temp)
 
