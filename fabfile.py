@@ -8,6 +8,7 @@ env.hosts = ['truedat.bluetab.net']
 
 def pack():
     # build the package
+    local('pip install -e .', capture=False)
     local('python setup.py sdist --formats=gztar', capture=False)
 
 
@@ -27,7 +28,7 @@ def deploy():
     run('virtualenv -p python3 /home/ec2-user/td_dl/venv')
 
     # install the package in the application's virtualenv with pip
-    run('/home/ec2-user/td_dl/venv/bin/pip install /tmp/%s' % filename)
+    run('/home/ec2-user/td_dl/venv/bin/pip install /tmp/%s' % filename, timeout=15)
 
     # remove the uploaded package
     run('rm -r /tmp/%s' % filename)
