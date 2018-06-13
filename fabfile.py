@@ -31,7 +31,7 @@ def deploy():
     run('/home/ec2-user/td_dl/venv/bin/pip install /tmp/%s' % filename, timeout=15)
 
     # remove the uploaded package
-    run('rm -r /tmp/%s' % filename)
+    #run('rm -r /tmp/%s' % filename)
 
     # restart lineage service
     run('touch /home/ec2-user/td_dl/wsgi.py && \
