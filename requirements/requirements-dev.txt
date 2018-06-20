@@ -1,2 +1,3 @@
 pandas==0.22.0
 behave==1.2.6
+requests=2.13.0
