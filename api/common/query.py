@@ -239,11 +239,23 @@ def listGroupContains(tx, group_id):
     query = """
         MATCH (x:Group)
         WHERE id(x)={group_id}
-        WITH x.name AS name
+        WITH x AS x, x.name AS name
+        OPTIONAL MATCH p=(n:Group)-[:CONTAINS*]->(x) 
+        WHERE not ((n)<-[:CONTAINS]-())
+        WITH (CASE WHEN p IS NULL THEN [x.name] ELSE extract(n IN nodes(p)| n.name) END) 
+        AS origin_list, name AS name
         MATCH(x:Group{{name:name}})-[:CONTAINS]->(n)
-        WHERE not n.select_hidden
-        WITH count(n.name) as cnt, n.name as name, 
-        collect(n)[0] AS n
-        RETURN DISTINCT n""".format(group_id=group_id)
+        WHERE not n.select_hidden 
+        WITH origin_list AS origin_list, n AS target_node
+        MATCH p=(n:Group)-[:CONTAINS*]->(target_node)
+        WHERE not ((n)<-[:CONTAINS]-())
+        WITH extract(n IN nodes(p)| n.name) AS target_list, origin_list 
+        AS origin_list, target_node AS target_node
+        WITH target_list[0..(size(target_list) - 1)] AS target_list, origin_list, target_node
+        MATCH (target_node) WHERE target_list = origin_list AND not target_node.select_hidden
+        WITH count(target_node.name) as cnt, target_node.name as name, 
+        collect(target_node)[0] AS target_node
+        RETURN DISTINCT target_node AS n
+        """.format(group_id=group_id)
     records = tx.run(query)
     return records
