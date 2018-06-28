@@ -28,6 +28,7 @@ def deploy():
     run('virtualenv -p python3 /home/ec2-user/td_dl/venv')
 
     # install the package in the application's virtualenv with pip
+    run('/home/ec2-user/td_dl/venv/bin/pip install --upgrade pip')
     run('/home/ec2-user/td_dl/venv/bin/pip install /tmp/%s' % filename, timeout=15)
 
     # remove the uploaded package
