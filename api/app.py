@@ -1,6 +1,7 @@
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 from flasgger import Swagger
+from healthcheck import HealthCheck
 
 import os
 
@@ -10,6 +11,9 @@ environ = os.getenv("APP_ENV", "Development") if \
     else "Development"
 
 app = Flask(__name__)
+
+health = HealthCheck(app, "/health")
+
 CORS(app)
 app.config.from_object('api.settings.config.{}Config'.format(environ))
 
