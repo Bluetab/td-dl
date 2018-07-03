@@ -28,7 +28,6 @@ COPY --from=dependencies /root/.cache /root/.cache
 # Install app dependencies
 RUN pip install -r requirements.txt
 COPY --from=build /app/ ./
-ENV APP_ENV Production
 
 EXPOSE 4003
 

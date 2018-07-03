@@ -7,7 +7,7 @@ import os
 
 
 environ = os.getenv("APP_ENV", "Development") if \
-    os.getenv("APP_ENV", "Development") in ["Development", "Production", "Testing"] \
+    os.getenv("APP_ENV", "Development") in ["Development", "Production", "Testing", "NewProduction"] \
     else "Development"
 
 app = Flask(__name__)

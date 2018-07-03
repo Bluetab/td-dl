@@ -24,6 +24,18 @@ class ProductionConfig(Config):
     UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
                                  'media/uploads')
     PORT = 4003
+    PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
+    SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
+    EXTERNAL_HOST = 'truedat.bluetab.net'
+    EXTERNAL_PORT = 8002
+    SWAGGER_HOST = "{}:{}".format(EXTERNAL_HOST, EXTERNAL_PORT)
+
+
+class NewProductionConfig(Config):
+    APPLICATION_ROOT = '/home/ec2-user/td_dl'
+    UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
+                                 'media/uploads')
+    PORT = 4003
     SECRET_KEY = os.getenv('GUARDIAN_SECRET_KEY', 'SuperSecretTruedat')
     PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
