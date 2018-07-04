@@ -29,10 +29,10 @@ def deploy():
 
     # install the package in the application's virtualenv with pip
     run('/home/ec2-user/td_dl/venv/bin/pip install --upgrade pip')
-    run('/home/ec2-user/td_dl/venv/bin/pip install /tmp/%s' % filename, timeout=15)
+    run('/home/ec2-user/td_dl/venv/bin/pip install /tmp/%s' % filename, pty=False)
 
     # remove the uploaded package
-    #run('rm -r /tmp/%s' % filename)
+    run('rm -r /tmp/%s' % filename)
 
     # restart lineage service
     run('touch /home/ec2-user/td_dl/wsgi.py && \

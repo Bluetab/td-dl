@@ -12,6 +12,5 @@ relations.csv
 resources.csv
 .idea/
 data-lineage.iml
-build_centos/env.conf
 
 \.vscode/

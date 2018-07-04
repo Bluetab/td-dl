@@ -1,10 +1,11 @@
+from api.common.constants import PORT_DES, PORT_PRO
 from api.app import app
 import os
 
 class Config(object):
     DEBUG = False
     TESTING = False
-    PORT = 4003
+    PORT = PORT_DES
     SECRET_KEY = 'SuperSecretTruedat'
     JWT_AUD = 'tdauth'
     ALGORITHM = 'HS512'
@@ -23,7 +24,7 @@ class ProductionConfig(Config):
     APPLICATION_ROOT = '/home/ec2-user/td_dl'
     UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
                                  'media/uploads')
-    PORT = 4003
+    PORT = PORT_PRO
     PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")
     EXTERNAL_HOST = 'truedat.bluetab.net'
@@ -35,7 +36,7 @@ class NewProductionConfig(Config):
     APPLICATION_ROOT = '/home/ec2-user/td_dl'
     UPLOAD_FOLDER = os.path.join(APPLICATION_ROOT,
                                  'media/uploads')
-    PORT = 4003
+    PORT = PORT_PRO
     SECRET_KEY = os.getenv('GUARDIAN_SECRET_KEY', 'SuperSecretTruedat')
     PATH_NEO4J = '/home/ec2-user/neo4j/lineage'
     SWAGGER_ROOT = app.root_path.replace(APPLICATION_ROOT+"/", "")

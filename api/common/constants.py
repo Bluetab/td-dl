@@ -1,4 +1,5 @@
-
+PORT_DES = 4003
+PORT_PRO = 4003
 
 LINEAGE_ANALYSIS_LEVELS = "(r:Resource)<-[D:DEPENDS{levels}]-(n:Resource)"
 IMPACT_ANALYSIS_LEVELS = "(r:Resource)-[D:DEPENDS{levels}]->(n:Resource)"

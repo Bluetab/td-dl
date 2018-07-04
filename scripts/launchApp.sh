@@ -15,6 +15,10 @@ main(){
       start
       exit 0
       ;;
+    (foreground)
+      foreground
+      exit 0
+      ;;
     (status)
       status
       exit 0
@@ -42,7 +46,14 @@ stop(){
 start(){
   source ${PROJECT_PATH}/venv/bin/activate
   cd $PROJECT_PATH
-  APP_ENV=Production gunicorn --workers 3 --bind 127.0.0.1:4003 wsgi --daemon
+  APP_ENV=Production gunicorn -c python:api.common.gunicorn wsgi --daemon
+  status
+}
+
+foreground(){
+  source ${PROJECT_PATH}/venv/bin/activate
+  cd $PROJECT_PATH
+  APP_ENV=Production gunicorn -c python:api.common.gunicorn wsgi
   status
 }
 
