@@ -28,5 +28,7 @@ COPY --from=dependencies /root/.cache /root/.cache
 # Install app dependencies
 RUN pip install -r requirements.txt
 COPY --from=build /app/ ./
-ENV APP_ENV Production
-CMD ["gunicorn","-w 3", "--bind 127.0.0.1:4003", "wsgi", "--daemon"]
+
+EXPOSE 4003
+
+CMD ["gunicorn", "-b","0.0.0.0:4003", "wsgi"]
