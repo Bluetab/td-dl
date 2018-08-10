@@ -17,6 +17,7 @@ class Config(object):
     NEO4J_PASSWORD = "bluetab"
     EXTERNAL_HOST = 'localhost'
     EXTERNAL_PORT = 4003
+    REDIS_URI = "redis://localhost"
     SWAGGER_HOST = "{}:{}".format(EXTERNAL_HOST, EXTERNAL_PORT)
 
 
@@ -46,6 +47,7 @@ class NewProductionConfig(Config):
     NEO4J_PORT = 7687
     NEO4J_USER = os.getenv('NEO4J_USER', 'neo4j')
     NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD', 'bluetab')
+    REDIS_URI = os.getenv('REDIS_URI', 'redis://localhost')
     SWAGGER_HOST = "{}:{}".format(EXTERNAL_HOST, EXTERNAL_PORT)
 
 

@@ -2,10 +2,16 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from api.settings.auth import auth
+from api.settings.db import get_neo4j_db
+from api.common.cache import (get_redis_client, cache_field_external_id)
+from api.common.query import queryExtenalIds
+
 from api.common.utils import abort
 from api.app import app
+
 import subprocess
 import os
+
 
 metadata = Blueprint('metadata', __name__)
 
@@ -52,3 +58,14 @@ def checkFiles(list_file_request, type_file):
             f.save(path_upload)
 
     return list_filenames
+
+@metadata.route('/td_dl/cache', methods=['POST'])
+@auth.login_required
+def cache():
+    with get_neo4j_db() as session:
+        result = session.read_transaction(queryExtenalIds)
+        client = get_redis_client()
+        for record in result:
+            cache_field_external_id(client, record)
+
+    return "", 204

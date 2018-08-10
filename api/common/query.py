@@ -259,3 +259,12 @@ def listGroupContains(tx, group_id):
         """.format(group_id=group_id)
     records = tx.run(query)
     return records
+
+def queryExtenalIds(tx):
+    query = """
+        MATCH (system:Group) -[:CONTAINS]-> (group:Group) -[:CONTAINS]-> (structure:Group) -[:CONTAINS]-> (field:Resource)
+        WHERE system.type = "Load" and field.external_id is not null
+        RETURN system.name AS system, group.name AS group, structure.name AS structure, field.name AS field, field.external_id AS external_id    
+        """
+    records = tx.run(query)
+    return records

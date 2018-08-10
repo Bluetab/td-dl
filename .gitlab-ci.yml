@@ -15,10 +15,11 @@ deploy:
   script:
     - git branch -f master HEAD
     - export NEO4J_PASSWORD=$(echo $NEO4J_PASSWORD | sed -e "s/\//\\\\\//g")
+    - export REDIS_URI=$(echo $REDIS_URI | sed -e "s/\//\\\\\//g")
     - export GUARDIAN_SECRET_KEY=$(echo $GUARDIAN_SECRET_KEY | sed -e "s/\//\\\\\//g")
     - export PRODUCTION_HOST=$(echo $PRODUCTION_HOST | sed -e "s/\//\\\\\//g")
     - export PRODUCTION_USER=$(echo $PRODUCTION_USER | sed -e "s/\//\\\\\//g")
-    - docker run --rm -e NEO4J_PASSWORD=$NEO4J_PASSWORD -e PRODUCTION_HOST=$PRODUCTION_HOST -e PRODUCTION_USER=$PRODUCTION_USER -e PRODUCTION_PEM="$PRODUCTION_PEM" -e GUARDIAN_SECRET_KEY="$GUARDIAN_SECRET_KEY" -e USER=$USER -e BUILD_AT=$BUILD_AT -e TERM=$TERM -v $(pwd):/code:ro -w /code --entrypoint=/code/ci/deploy.sh bluetab/amazonlinux-python3-neo4j:20180123125610087277324
+    - docker run --rm -e NEO4J_PASSWORD=$NEO4J_PASSWORD -e REDIS_URI=$REDIS_URI -e PRODUCTION_HOST=$PRODUCTION_HOST -e PRODUCTION_USER=$PRODUCTION_USER -e PRODUCTION_PEM="$PRODUCTION_PEM" -e GUARDIAN_SECRET_KEY="$GUARDIAN_SECRET_KEY" -e USER=$USER -e BUILD_AT=$BUILD_AT -e TERM=$TERM -v $(pwd):/code:ro -w /code --entrypoint=/code/ci/deploy.sh bluetab/amazonlinux-python3-neo4j:20180123125610087277324
   only:
     - master
 
