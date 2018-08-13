@@ -7,10 +7,11 @@ def get_redis_client():
 
 def remove_cache(client):
     for key in client.scan_iter("data_field:*"):
-        with redis.pipeline() as pipe:
+        with client.pipeline() as pipe:
             while 1:
                 try:
                     pipe.watch(key)
+                    pipe.multi()
                     pipe.hdel(key, "external_id")
                     if pipe.hlen(key) == 0:
                         pipe.delete(key)
