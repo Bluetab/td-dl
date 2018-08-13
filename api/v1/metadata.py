@@ -3,7 +3,8 @@ from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from api.settings.auth import auth
 from api.settings.db import get_neo4j_db
-from api.common.cache import (get_redis_client, cache_field_external_id)
+from api.common.cache import (get_redis_client, remove_cache,
+                              cache_field_external_id)
 from api.common.query import queryExtenalIds
 
 from api.common.utils import abort
@@ -65,6 +66,7 @@ def cache():
     with get_neo4j_db() as session:
         result = session.read_transaction(queryExtenalIds)
         client = get_redis_client()
+        remove_cache(client)
         for record in result:
             cache_field_external_id(client, record)
 
