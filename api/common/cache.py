@@ -1,14 +1,25 @@
 from api.app import app
 import redis
+from redis.exceptions import WatchError
 
 def get_redis_client():
     return redis.from_url(url=app.config["REDIS_URI"])
 
 def remove_cache(client):
     for key in client.scan_iter("data_field:*"):
-        i = client.hdel(key, "external_id")
-        if client.hlen(key) == 0:
-            client.delete(key)
+        with redis.pipeline() as pipe:
+            while 1:
+                try:
+                    pipe.watch(key)
+                    pipe.hdel(key, "external_id")
+                    if pipe.hlen(key) == 0:
+                        pipe.delete(key)
+
+                    pipe.execute()
+                    break
+
+                except WatchError:
+                    continue
 
 def cache_field_external_id(client, record):
     system = record["system"]
