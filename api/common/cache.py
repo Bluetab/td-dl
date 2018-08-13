@@ -5,22 +5,17 @@ from redis.exceptions import WatchError
 def get_redis_client():
     return redis.from_url(url=app.config["REDIS_URI"])
 
+
 def remove_cache(client):
+    lua = """
+            redis.call('HDEL', KEYS[1], 'external_id')
+            if redis.call('HLEN', KEYS[1]) == 0 then
+                redis.call('DEL', KEYS[1])
+            end
+        """
+    delete_extenal_id = client.register_script(lua)
     for key in client.scan_iter("data_field:*"):
-        with client.pipeline() as pipe:
-            while 1:
-                try:
-                    pipe.watch(key)
-                    pipe.multi()
-                    pipe.hdel(key, "external_id")
-                    if pipe.hlen(key) == 0:
-                        pipe.delete(key)
-
-                    pipe.execute()
-                    break
-
-                except WatchError:
-                    continue
+        delete_extenal_id(keys=[key])
 
 def cache_field_external_id(client, record):
     system = record["system"]
