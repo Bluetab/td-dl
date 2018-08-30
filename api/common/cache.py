@@ -18,10 +18,8 @@ def remove_cache(client):
         delete_extenal_id(keys=[key])
 
 def cache_field_external_id(client, record):
-    system = record["system"]
-    group = record["group"]
-    structure = record["structure"]
-    field = record["field"]
     external_id = record["external_id"]
-    key = "data_field:{}:{}:{}:{}".format(system, group, structure, field)
-    client.hmset(key, {"external_id": external_id})
+    if external_id.count(".") == 3:
+        external_id_key = external_id.replace(".", ":")
+        key = "data_field:{}".format(external_id_key)
+        client.hmset(key, {"external_id": external_id})
