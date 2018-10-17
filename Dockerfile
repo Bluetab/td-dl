@@ -31,4 +31,4 @@ COPY --from=build /app/ ./
 
 EXPOSE 4003
 
-CMD ["gunicorn", "-b","0.0.0.0:4003", "wsgi"]
+CMD ["gunicorn", "-b", "0.0.0.0:4003", "wsgi"]
