@@ -6,16 +6,12 @@ from healthcheck import HealthCheck
 import os
 
 
-environ = os.getenv("APP_ENV", "Development") if \
-    os.getenv("APP_ENV", "Development") in ["Development", "Production", "Testing", "NewProduction"] \
-    else "Development"
-
 app = Flask(__name__)
 
 health = HealthCheck(app, "/health")
 
 CORS(app)
-app.config.from_object('api.settings.config.{}Config'.format(environ))
+app.config.from_object('api.settings.config.Config')
 
 app.config['SWAGGER'] = {
     'title': 'Truedat Data Lineage API',
