@@ -1,0 +1,3 @@
+"external_id:ID","name","type","description","select_hidden:boolean",":LABEL"
+"101","First Group","System","Our first group in simple example","False","Group"
+"102","Second Group","System","Our second group in simple example","False","Group"

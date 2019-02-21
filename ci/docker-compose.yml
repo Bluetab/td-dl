@@ -1,0 +1,48 @@
+version: "3.4"
+
+services:
+
+  test:
+      image: bluetab/amazonlinux-python3-neo4j:20180424163150279987171
+      entrypoint: /code/ci/test.sh
+      environment:
+        NEO4J_HOST: neo
+        NEO4J_PASSWORD: t0ps3cr3t
+        GUARDIAN_SECRET_KEY: SuperSecretTruedat
+        UPLOAD_PATH: /staging
+        METADATA_SCRIPT: /staging/metadata_uploaded.sh
+        REDIS_HOST: localhost
+        TESTING: "true"
+        DEBUG: "true"
+      ports:
+        - "4003:4003/tcp"
+      volumes:
+        - "./volumes/code:/code:ro"
+        - "./volumes/staging:/staging"
+      depends_on:
+        - neo
+
+  neo:
+      image: bluetab/neo4j:3.5.3
+      restart: always
+      environment:
+        NEO4J_AUTH: neo4j/t0ps3cr3t
+        NEO4J_USER: neo4j
+        NEO4J_PASS: t0ps3cr3t
+        INIT_CQL: 1
+        SLEEP_TIME_LOAD: 1
+      ports:
+        - "7474:7474/tcp"
+        - "7687:7687/tcp"
+      volumes:
+        - "./volumes/import:/import"
+      ulimits:
+        nofile:
+          soft: 40000
+          hard: 65536
+      healthcheck:
+        test: wget -q --spider http://localhost:7474 || exit 1
+        interval: 60s
+        timeout: 5s
+        retries: 3
+        start_period: 10s

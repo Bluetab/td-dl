@@ -1,20 +1,25 @@
 variables:
-  VERSION: "2.6.2"
+  VERSION: "2.14.0"
   ECR_NAMESPACE: "truedat"
   K8S_DEPLOYMENT: "dl"
   K8S_CONTAINER: "dl"
 
 stages:
-  - build
   - test
   - deploy
 
 test:
   stage: test
+  tags:
+    - docker-compose
+  before_script:
+    - cd ci
+    - docker-compose up -d neo
   script:
-    - docker run --rm -v $(pwd):/code:ro -w /code --entrypoint=/code/ci/test.sh bluetab/amazonlinux-python3-neo4j:20180424163150279987171
-  artifacts:
-    untracked: true
+    - docker-compose run test
+  after_script:
+    - cd ci
+    - docker-compose down
 
 deploy:
   stage: deploy

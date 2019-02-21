@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from support import constants
 from api.app import app
+import os.path
 import requests
 import pandas
 import jwt
@@ -15,35 +16,40 @@ def createFilesAndUpload(context):
 
     for row in context.table:
         if row["File"] == 'Resources':
+            df_headers = ['external_id:ID','name','type','description','select_hidden:boolean',':LABEL']
             df_temp = pandas.DataFrame(data={
                 'external_id:ID': [row["Id"]],
-                'name': [row["Name"]], 'type': [row["Type"]],
+                'name': [row["Name"]],
+                'type': [row["Type"]],
                 'description': [row["Description"]],
                 'select_hidden:boolean': [row["Select Hidden"]],
-                ':LABEL': ['Resource']})
+                ':LABEL': ['Resource']}, columns=df_headers)
             df_resources = appendDataFrame(df_resources, df_temp)
 
         elif row["File"] == 'Groups':
+            df_headers = ['external_id:ID','name','type','description','select_hidden:boolean',':LABEL']
             df_temp = pandas.DataFrame(data={
                 'external_id:ID': [row["Id"]],
-                'name': [row["Name"]], 'type': [row["Type"]],
+                'name': [row["Name"]],
+                'type': [row["Type"]],
                 'description': [row["Description"]],
                 'select_hidden:boolean': [row["Select Hidden"]],
-                ':LABEL': ['Group']})
+                ':LABEL': ['Group']}, columns=df_headers)
             df_groups = appendDataFrame(df_groups, df_temp)
 
         elif row["File"] == 'Relations':
+            df_headers = [':START_ID',':END_ID',':TYPE']
             df_temp = pandas.DataFrame(data={
                 ':START_ID': [row["Id Source"]],
-                ':END_ID': [row["Id Target"]], ':TYPE': [row["Type"]]})
+                ':END_ID': [row["Id Target"]], ':TYPE': [row["Type"]]}, columns=df_headers)
             df_relations = appendDataFrame(df_relations, df_temp)
 
     df_resources.to_csv(constants.FILENAME_RESOURCES,
-                        index=None, sep=';', encoding='utf-8', quoting=csv.QUOTE_ALL)
+                        index=None, sep=',', encoding='utf-8', quoting=csv.QUOTE_ALL)
     df_groups.to_csv(constants.FILENAME_GROUPS,
-                     index=None, sep=';', encoding='utf-8', quoting=csv.QUOTE_ALL)
+                     index=None, sep=',', encoding='utf-8', quoting=csv.QUOTE_ALL)
     df_relations.to_csv(constants.FILENAME_RELATIONS,
-                        index=None, sep=';', encoding='utf-8', quoting=csv.QUOTE_ALL)
+                        index=None, sep=',', encoding='utf-8', quoting=csv.QUOTE_ALL)
 
     files = [
         (constants.NODES,
@@ -58,6 +64,12 @@ def createFilesAndUpload(context):
                             headers=constants.get_auth_header(context.token))
 
     return request
+
+
+def check_files_exist(context):
+    for row in context.table:
+        file_name = "/staging/" + row["Name"]
+        assert os.path.isfile(file_name), "file does not exist: %r" % file_name
 
 
 def check_table_json(context, jsonData):

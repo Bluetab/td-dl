@@ -16,9 +16,9 @@ import os
 
 metadata = Blueprint('metadata', __name__)
 
-UPLOAD_FOLDER = app.config['UPLOAD_FOLDER']
+UPLOAD_PATH = app.config['UPLOAD_PATH']
 ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
-PATH_NEO4J = app.config['PATH_NEO4J']
+METADATA_SCRIPT = app.config['METADATA_SCRIPT']
 
 
 @metadata.route('/td_dl/metadata', methods=['POST'])
@@ -31,15 +31,17 @@ def upload():
         if 'nodes' in key_type_file or 'rels' in key_type_file:
             list_filenames.extend(
                 checkFiles(request.files.getlist(key_type_file), key_type_file)
-                )
+            )
     if not list_filenames:
-        return abort(422, {'message': "unprocessable entity"})
-    string_concat = ";".join(list_filenames)
-    status = subprocess.call(['./scripts/importDBNeo4j.sh',
-        string_concat, PATH_NEO4J])
-    if status != 0:
-        return abort(422, {'message': "unprocessable entity"})
-    return "", 204
+        return abort(422, {'message': 'unprocessable entity'})
+
+    if METADATA_SCRIPT:
+        string_concat = ';'.join(list_filenames)
+        status = subprocess.call([METADATA_SCRIPT, string_concat])
+        if status != 0:
+            return abort(422, {'message': 'unprocessable entity'})
+
+    return '', 202
 
 
 def allowed_file(filename):
@@ -48,17 +50,17 @@ def allowed_file(filename):
 
 
 def checkFiles(list_file_request, type_file):
-
     list_filenames = []
     for f in list_file_request:
         filename = secure_filename(f.filename)
         if f and allowed_file(filename):
-            path_upload = os.path.join(app.config['UPLOAD_FOLDER'],
+            path_upload = os.path.join(UPLOAD_PATH,
                                        type_file + '_' + filename)
             list_filenames.append(path_upload)
             f.save(path_upload)
 
     return list_filenames
+
 
 @metadata.route('/td_dl/cache', methods=['POST'])
 @auth.login_required
@@ -70,4 +72,4 @@ def cache():
         for record in result:
             cache_field_external_id(client, record)
 
-    return "", 204
+    return '', 204

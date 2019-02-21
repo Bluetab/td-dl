@@ -1,33 +1,20 @@
 #! /bin/bash
+export APPLICATION_ROOT=/working_code
 
 yum -y install nc
 
 # wait for neo4j
 function wait_for_neo4j {
-  while ! nc -z localhost 7474; do
-    echo "Neo4j is unavailable - sleeping"
+  echo "Waiting for Neo4J."
+  while ! nc -z ${NEO4J_HOST} 7474; do
+    echo -n "."
     sleep 1
   done
+  echo
 }
-
-echo "Starting neo4j service"
-/neo4j/bin/neo4j start
-
-wait_for_neo4j
-
-rm /neo4j/data/dbms/auth
-
-/neo4j/bin/neo4j-admin set-initial-password bluetab
-
-/neo4j/bin/neo4j restart
-
-wait_for_neo4j
 
 cp -R /code /working_code
 cd /working_code
-mkdir -p /working_code/api/media/uploads
-sed -i -e "s/sudo\s//g" ./scripts/*
-
 rm -rf /working_code/venv || exit 1
 virtualenv -p python3.6 /working_code/venv
 source /working_code/venv/bin/activate
@@ -36,7 +23,8 @@ pip install -e .[dev]
 echo "Starting tests"
 python setup.py test || exit 1
 
-export APP_ENV=Testing
+wait_for_neo4j
+
 echo "Starting behave"
 behave || exit 1
 

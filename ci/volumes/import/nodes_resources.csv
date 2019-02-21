@@ -1,0 +1,7 @@
+"external_id:ID","name","type","description","select_hidden:boolean",":LABEL"
+"1","First Field","Field","This is First calculated field","","Resource"
+"2","Second Field","Field","This is Second calculated field","","Resource"
+"3","Third Field","Field","This is Third calculated field","","Resource"
+"4","Forth Field","Field","This is Fourth calculated field","","Resource"
+"11","First Transformation","Transformation","This is the first transformation","","Resource"
+"12","Second Transformation","Transformation","This is the second transformation","","Resource"
