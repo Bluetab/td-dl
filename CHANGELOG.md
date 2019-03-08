@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.15.0] 2019-03-08
+
+### Changed
+
+- Update neo4j driver to 1.7.1
+
 ## [2.14.0] 2019-02-21
 
 ### Changed
