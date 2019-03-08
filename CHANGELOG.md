@@ -1,10 +1,11 @@
 # Changelog
 
-## [2.15.0] 2019-03-08
+## [2.15.1] 2019-03-08
 
 ### Changed
 
 - Update neo4j driver to 1.7.1
+- Increase gunicorn worker timeout to 90s
 
 ## [2.14.0] 2019-02-21
 
