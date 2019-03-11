@@ -1,4 +1,3 @@
-from api.common.constants import PORT_DES, PORT_PRO
 from api.app import app
 import os
 
