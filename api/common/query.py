@@ -52,8 +52,13 @@ def queryPath(tx, type_analysis, toplevel, ids, levels):
         levels=format_levels(levels))
     query = """
             MATCH p={query_path_analysis}
-            WHERE id(r) in [{ids}] WITH DISTINCT NODES(p)
-            AS Resource UNWIND Resource AS X
+            WHERE id(r) IN [{ids}]
+            AND NOT id(n) IN [{ids}]
+            WITH DISTINCT NODES(p)
+            AS Resource
+            UNWIND Resource AS X
+            WITH DISTINCT X
+            LIMIT 300
             MATCH path=(:Group {{type: "{toplevel}"}})-[:CONTAINS*]->(X)
             RETURN path as p
             UNION
