@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.15.2] 2019-03-11
+
+### Changed
+
+- Limit dependencies to 300 in paths query
+
 ## [2.15.1] 2019-03-08
 
 ### Changed
