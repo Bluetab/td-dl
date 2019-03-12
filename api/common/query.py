@@ -50,7 +50,7 @@ def queryPathApoc(tx, type_analysis, toplevel, ids, levels):
     depends = "<DEPENDS" if type_analysis == "lineage" else "DEPENDS>"
     query = """\
             MATCH (top:Group {{type: "{toplevel}"}})
-            CALL apoc.path.subgraphNodes([{ids}], {{relationshipFilter: "{depends}", labelFilter: "+Resource", limit: 600}}) YIELD node
+            CALL apoc.path.subgraphNodes([{ids}], {{relationshipFilter: "{depends}", labelFilter: "+Resource", limit: 300}}) YIELD node
             CALL apoc.path.expandConfig(node, {{relationshipFilter: "<CONTAINS", labelFilter: "+Group", terminatorNodes: top}}) YIELD path
             RETURN path as p
             """.strip().format(depends=depends, ids=",".join(map(str, ids)), toplevel=toplevel)
