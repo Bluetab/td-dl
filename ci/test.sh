@@ -28,4 +28,8 @@ wait_for_neo4j
 echo "Starting behave"
 behave || exit 1
 
+export APOC="true"
+echo "Starting behave (APOC)"
+behave || exit 1
+
 echo "Test step finish successfully"

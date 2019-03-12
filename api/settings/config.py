@@ -33,3 +33,5 @@ class Config(object):
     # Redis config
     REDIS_HOST = os.getenv('REDIS_HOST', default='redis')
     REDIS_URI = 'redis://' + REDIS_HOST
+    # APOC
+    APOC = os.getenv('APOC', default='') == 'true'

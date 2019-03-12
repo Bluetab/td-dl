@@ -43,12 +43,13 @@ def parseBoltPathsFlat(records, type_analysis, toplevel, session):
                       sublist in map(lambda x: x["p"].nodes, records)
                       for item in sublist]))
     nodes = [parseBoltNodes(x) for x in nodes]
+    uuids = [n["uuid"] for n in nodes]
+    uuid_index = { uuids[i] : i for i in range(0, len(uuids) ) }
     for record in records:
         deep = 0
         path = record["p"]
         for p in path:
-            start_id = findIndexInList(nodes,
-                                       lambda item: item["uuid"] == p.start)
+            start_id = uuid_index.get(p.start)
             contains = nodes[start_id].setdefault("contains", [])
             if p.end not in contains:
                 contains.append(p.end)
