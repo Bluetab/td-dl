@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from api.common.parser import parseBoltPathsFlat, parseBoltPathsTree
-from api.common.query import queryPath, getUuidsFromNodes
+from api.common.query import queryPath, queryPathApoc, getUuidsFromNodes
 from api.common.utils import checkparams, abort, checkonlyone
 from api.settings.db import get_neo4j_db
 from api.settings.auth import auth
@@ -30,8 +30,9 @@ def index():
 
     ids = request.json["uuids"]
     with get_neo4j_db() as session:
+        unit = queryPathApoc if current_app.config["APOC"] else queryPath
         paths = parseBoltPathsFlat(
-            session.write_transaction(queryPath, type_analysis, toplevel, ids, levels), type_analysis, toplevel, session)
+            session.write_transaction(unit, type_analysis, toplevel, ids, levels), type_analysis, toplevel, session)
         return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 
 

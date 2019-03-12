@@ -1,6 +1,12 @@
 # Changelog
 
-## [2.15.2] 2019-03-11
+## [Unrelease]
+
+### Changed
+
+- [TD-1561] Support for Neo4j APOC plugin
+
+## [2.15.3] 2019-03-11
 
 ### Changed
 
