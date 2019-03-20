@@ -1,4 +1,3 @@
-from api.common.constants import PORT_PRO
 
-bind = "0.0.0.0:" + str(PORT_PRO)
+bind = "0.0.0.0:4003"
 workers = 3
