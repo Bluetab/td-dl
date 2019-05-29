@@ -1,12 +1,12 @@
 # Changelog
 
-## [2.15.5]
+## [2.15.5] 2019-03-20
 
 ### Changed
 
 - [TD-1444] Removes PORT_PRO environment variable
 
-## [2.15.4]
+## [2.15.4] 2019-03-18
 
 ### Changed
 
