@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- [TD-1824] Changed lua redis script to check for hash type
+
 ## [2.15.5] 2019-03-20
 
 ### Changed

@@ -8,10 +8,12 @@ def get_redis_client():
 
 def remove_cache(client):
     lua = """
-            redis.call('HDEL', KEYS[1], 'external_id')
-            if redis.call('HLEN', KEYS[1]) == 0 then
-                redis.call('DEL', KEYS[1])
-            end
+        if redis.call('TYPE', KEYS[1])['ok'] == 'hash' then
+          redis.call('HDEL', KEYS[1], 'external_id')
+          if redis.call('HLEN', KEYS[1]) == 0 then
+              redis.call('DEL', KEYS[1])
+          end
+        end
         """
     delete_extenal_id = client.register_script(lua)
     for key in client.scan_iter("data_field:*"):
