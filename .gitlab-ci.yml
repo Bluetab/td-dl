@@ -1,5 +1,5 @@
 variables:
-  VERSION: "2.15.5"
+  VERSION: "2.21.1"
   ECR_NAMESPACE: "truedat"
   K8S_DEPLOYMENT: "dl"
   K8S_CONTAINER: "dl"
