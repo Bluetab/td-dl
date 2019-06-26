@@ -1,6 +1,5 @@
 from api.app import app
 import redis
-from redis.exceptions import WatchError
 
 def get_redis_client():
     return redis.from_url(url=app.config["REDIS_URI"])
