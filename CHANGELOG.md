@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- [TD-1681] Cache improvements. Field external_ids are now written to the Set "data_fields:external_ids".
+
 ## [2.21.0] 2019-06-10
 
 ### Changed
