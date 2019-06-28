@@ -7,7 +7,11 @@ def get_redis_client():
 def remove_cache(client):
     client.delete("data_fields:external_ids")
 
-def cache_field_external_id(client, record):
-    external_id = record["external_id"]
-    if external_id.count(".") == 3:
-        client.sadd("data_fields:external_ids", external_id)
+def cache_field_external_ids(client, external_ids):
+    for chunk in chunks(external_ids, 100):
+        client.sadd("data_fields:external_ids", *chunk)
+
+# Yield successive n-sized chunks from l.
+def chunks(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]

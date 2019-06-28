@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from api.settings.auth import auth
 from api.settings.db import get_neo4j_db
 from api.common.cache import (get_redis_client, remove_cache,
-                              cache_field_external_id)
+                              cache_field_external_ids)
 from api.common.query import queryExtenalIds
 
 from api.common.utils import abort
@@ -69,7 +69,8 @@ def cache():
         result = session.read_transaction(queryExtenalIds)
         client = get_redis_client()
         remove_cache(client)
-        for record in result:
-            cache_field_external_id(client, record)
+        # Cache external_ids with format <system>.<group>.<name>.<field>
+        external_ids = [r["external_id"] for r in result if r["external_id"].count(".") == 3]
+        cache_field_external_ids(external_ids)
 
     return '', 204
