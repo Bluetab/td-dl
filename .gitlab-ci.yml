@@ -1,5 +1,5 @@
 variables:
-  VERSION: "2.21.1"
+  VERSION: "3.1.0"
   ECR_NAMESPACE: "truedat"
   K8S_DEPLOYMENT: "dl"
   K8S_CONTAINER: "dl"
@@ -30,7 +30,7 @@ deploy:
     - tags
   script:
     - git branch -f master HEAD
-    - export VERSION=${CI_COMMIT_TAG:-${VERSION}-alpha.${CI_PIPELINE_ID}}
+    - export VERSION=${CI_COMMIT_TAG:-${VERSION}-alpha.${CI_JOB_ID}}
     - docker build -t ${ECR_NAMESPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA} .
     - docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION mesosphere/aws-cli ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION} | awk '{ sub("\r$", ""); print }' > output
     - bash -f output
