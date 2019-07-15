@@ -6,7 +6,7 @@ def cache_structures_external_ids(system_external_ids):
     keys = r.keys("structures:external_ids:*")
     keys = list(map(lambda bkey: f"{str(bkey, 'utf-8')}", keys))
     for key in keys:
-        result = r.delete(key)
+        r.delete(key)
 
     pipe = r.pipeline()
     for system_external_id, external_ids in system_external_ids.items():
