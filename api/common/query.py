@@ -277,6 +277,6 @@ def listGroupContains(tx, group_id):
     return records
 
 def queryExtenalIds(tx):
-    query = """MATCH (n) RETURN n.external_id AS external_id"""
+    query = """MATCH (n) RETURN n.external_id AS external_id, n.system_external_id AS system_external_id"""
     records = tx.run(query)
     return records

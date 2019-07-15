@@ -1,12 +1,18 @@
 from api.app import app
 import redis
 
-def cache_field_external_ids(external_ids):
+def cache_structures_external_ids(system_external_ids):
     r = redis.from_url(url=app.config["REDIS_URI"])
+    keys = r.keys("structures:external_ids:*")
+    keys = list(map(lambda bkey: f"{str(bkey, 'utf-8')}", keys))
+    for key in keys:
+        result = r.delete(key)
+
     pipe = r.pipeline()
-    pipe.delete("data_fields:external_ids")
-    for chunk in chunks(external_ids, 200):
-        pipe.sadd("data_fields:external_ids", *chunk)
+    for system_external_id, external_ids in system_external_ids.items():
+        redis_key = f"structures:external_ids:{system_external_id}"
+        for chunk in chunks(external_ids, 200):
+            pipe.sadd(redis_key, *chunk)
     pipe.execute()
 
 # Yield successive n-sized chunks from l.

@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from api.settings.auth import auth
 from api.settings.db import get_neo4j_db
-from api.common.cache import cache_field_external_ids
+from api.common.cache import cache_structures_external_ids
 from api.common.query import queryExtenalIds
 
 from api.common.utils import abort
@@ -66,7 +66,15 @@ def checkFiles(list_file_request, type_file):
 def cache():
     with get_neo4j_db() as session:
         result = session.read_transaction(queryExtenalIds)
-        # Cache external_ids with format <system>.<group>.<name>.<field>
-        external_ids = [r["external_id"] for r in result if r["external_id"].count(".") == 3]
-        cache_field_external_ids(external_ids)
+        
+        system_external_ids = {}
+        for r in result:
+            system_external_id = r["system_external_id"]
+            if system_external_id in system_external_ids:
+                system_ids = system_external_ids[system_external_id]
+                system_ids.append(r["external_id"])
+            else:
+                system_external_ids[system_external_id] = [r["external_id"]]
+
+        cache_structures_external_ids(system_external_ids)
     return '', 204
