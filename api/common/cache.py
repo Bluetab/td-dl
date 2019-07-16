@@ -9,7 +9,8 @@ def cache_structures_external_ids(system_external_ids):
         r.delete(*keys)
 
     pipe = r.pipeline()
-    for system_external_id, external_ids in system_external_ids.items():
+    for system_external_id, external_ids in system_external_ids:
+        external_ids = list(map(lambda system_external_id: system_external_id["external_id"], list(external_ids)))
         redis_key = f"structures:external_ids:{system_external_id}"
         for chunk in chunks(external_ids, 200):
             pipe.sadd(redis_key, *chunk)

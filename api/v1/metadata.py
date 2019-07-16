@@ -11,7 +11,7 @@ from api.app import app
 
 import subprocess
 import os
-
+import itertools as it
 
 metadata = Blueprint('metadata', __name__)
 
@@ -67,14 +67,7 @@ def cache():
     with get_neo4j_db() as session:
         result = session.read_transaction(queryExtenalIds)
         
-        system_external_ids = {}
-        for r in result:
-            system_external_id = r["system_external_id"]
-            if system_external_id in system_external_ids:
-                system_ids = system_external_ids[system_external_id]
-                system_ids.append(r["external_id"])
-            else:
-                system_external_ids[system_external_id] = [r["external_id"]]
-
+        data = result.data()
+        system_external_ids = it.groupby(data, key=lambda x: x['system_external_id'])
         cache_structures_external_ids(system_external_ids)
     return '', 204
