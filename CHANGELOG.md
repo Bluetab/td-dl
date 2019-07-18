@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- [TD-1970] Cache all structures external ids under set "structures:external_ids:{system_external_id}"
+
 ## [3.1.0] 2019-07-08
 
 ### Changed
