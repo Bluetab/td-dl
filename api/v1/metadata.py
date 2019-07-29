@@ -8,10 +8,10 @@ from api.common.query import queryExtenalIds
 
 from api.common.utils import abort
 from api.app import app
+from collections import defaultdict
 
 import subprocess
 import os
-import itertools as it
 
 metadata = Blueprint('metadata', __name__)
 
@@ -67,7 +67,11 @@ def cache():
     with get_neo4j_db() as session:
         result = session.read_transaction(queryExtenalIds)
         
-        data = result.data()
-        system_external_ids = it.groupby(data, key=lambda x: x['system_external_id'])
+        system_external_ids = defaultdict(list)
+        for r in result:
+            system_external_id = r["system_external_id"]
+            external_id = r["external_id"]
+            system_external_ids[system_external_id].append(external_id)
+
         cache_structures_external_ids(system_external_ids)
     return '', 204
