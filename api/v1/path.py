@@ -15,24 +15,23 @@ def index():
     error, param = checkonlyone(["uuids", "titles"], request)
     if error:
         return abort(400, {'error': error})
-    error = checkparams(["toplevel", "levels", "type_analysis"], request)
+    error = checkparams(["levels", "type_analysis"], request)
     if error:
         return abort(400, {'error': error})
-    toplevel = request.json['toplevel']
     levels = request.json['levels']
     type_analysis = request.json['type_analysis']
     if param == "titles":
         with get_neo4j_db() as session:
             ids = session.write_transaction(getUuidsFromNodes, ("external_id", request.json[param]))
             paths = parseBoltPathsFlat(
-                session.write_transaction(queryPath, type_analysis, toplevel, ids, levels), type_analysis, toplevel, session)
+                session.write_transaction(queryPath, type_analysis, ids, levels), type_analysis, session)
             return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 
     ids = request.json["uuids"]
     with get_neo4j_db() as session:
         unit = queryPathApoc if current_app.config["APOC"] else queryPath
         paths = parseBoltPathsFlat(
-            session.write_transaction(unit, type_analysis, toplevel, ids, levels), type_analysis, toplevel, session)
+            session.write_transaction(unit, type_analysis, ids, levels), type_analysis, session)
         return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 
 

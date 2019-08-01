@@ -8,16 +8,12 @@ parameters:
     schema:
       required:
         - uuids
-        - toplevel
         - levels
         - type_analysis
       properties:
         uuids:
           type: array
           description: Group id (Neo4j id)
-        toplevel:
-          type: string
-          description: Top level group
         levels:
           type: integer
           description: levels paths

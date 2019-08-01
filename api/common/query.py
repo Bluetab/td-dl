@@ -46,19 +46,19 @@ def queryGetNode(tx, node, node_id, limit=25):
     return records
 
 
-def queryPathApoc(tx, type_analysis, toplevel, ids, levels):
+def queryPathApoc(tx, type_analysis, ids, levels):
     depends = "<DEPENDS" if type_analysis == "lineage" else "DEPENDS>"
     query = """\
-            MATCH (top:Group {{type: "{toplevel}"}})
+            MATCH (top:Group)
             CALL apoc.path.subgraphNodes([{ids}], {{relationshipFilter: "{depends}", labelFilter: "+Resource", limit: 300}}) YIELD node
             CALL apoc.path.expandConfig(node, {{relationshipFilter: "<CONTAINS", labelFilter: "+Group", terminatorNodes: top}}) YIELD path
             RETURN path as p
-            """.strip().format(depends=depends, ids=",".join(map(str, ids)), toplevel=toplevel)
+            """.strip().format(depends=depends, ids=",".join(map(str, ids)))
     records = tx.run(query)
     return records
 
 
-def queryPath(tx, type_analysis, toplevel, ids, levels):
+def queryPath(tx, type_analysis, ids, levels):
     query_path_analysis = LINEAGE_ANALYSIS_LEVELS \
         if type_analysis == "lineage" else IMPACT_ANALYSIS_LEVELS
     query_path_analysis = query_path_analysis.format(
@@ -72,14 +72,14 @@ def queryPath(tx, type_analysis, toplevel, ids, levels):
             UNWIND Resource AS X
             WITH DISTINCT X
             LIMIT 300
-            MATCH path=(:Group {{type: "{toplevel}"}})-[:CONTAINS*]->(X)
+            MATCH path=(:Group)-[:CONTAINS*]->(X)
             RETURN path as p
             UNION
-            MATCH path=(:Group {{type: "{toplevel}"}})-[:CONTAINS*]->(X)
+            MATCH path=(:Group)-[:CONTAINS*]->(X)
             WHERE id(X) in [{ids}]
             RETURN path as p
             """.strip().format(query_path_analysis=query_path_analysis,
-                       ids=",".join(map(str, ids)), toplevel=toplevel)
+                       ids=",".join(map(str, ids)))
     records = tx.run(query)
     return records
 

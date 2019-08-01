@@ -144,10 +144,9 @@ def pathGroups():
 
         file: {0}/v1/swagger/groups_path.yml
     """
-    error = checkparams(["toplevel", "levels", "type_analysis"], request)
+    error = checkparams(["levels", "type_analysis"], request)
     if error:
         return abort(400, {'message': error})
-    toplevel = request.json["toplevel"]
     levels = request.json["levels"]
     type_analysis = request.json["type_analysis"]
     group_ids = request.json["uuids"]
@@ -157,8 +156,8 @@ def pathGroups():
                                         group_ids)
         paths = parseBoltPathsFlat(
             session.write_transaction(queryPath, type_analysis,
-                                      toplevel, ids, levels),
-            type_analysis, toplevel, session)
+                                      ids, levels),
+            type_analysis, session)
 
     return jsonify({"data": {"paths": paths, "uuids": ids}}), 200
 

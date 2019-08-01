@@ -16,7 +16,7 @@ def step_impl(context, code):
 def step_impl(context, username, type_analysis, resourceId, groupType):
     r = lineage.callAPIResources(context.token)
     resource = lineage.findByKeyJson(r.json()["data"], resourceId, 'external_id')
-    data = {"uuids":[resource['uuid']], "toplevel":groupType, "levels": -1, "type_analysis":type_analysis}
+    data = {"uuids":[resource['uuid']], "levels": -1, "type_analysis":type_analysis}
     r = requests.post(constants.API_PATH, data=json.dumps(data), headers=constants.get_header(context.token))
     lineage.check_table_json(context, r.json()["data"]['paths'])
 
@@ -37,7 +37,7 @@ def step_impl(context, username):
 def step_impl(context, username, type_analysis, resourceId, groupType):
     r = lineage.callAPIResources(context.token)
     resource = lineage.findByKeyJson(r.json()["data"], resourceId, 'external_id')
-    data = {"uuids":[resource['uuid']], "toplevel":groupType, "levels": -1, "type_analysis":type_analysis}
+    data = {"uuids":[resource['uuid']], "levels": -1, "type_analysis":type_analysis}
     r = requests.post(constants.API_PATH, json=data, headers=constants.get_header(context.token))
     context.jsonData = r.json()
 
