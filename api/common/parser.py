@@ -37,7 +37,7 @@ def getDepsNodes(node, type_analysis, resource_ids, session):
     return node
 
 
-def parseBoltPathsFlat(records, type_analysis, toplevel, session):
+def parseBoltPathsFlat(records, type_analysis, session):
     records = records.data()
     nodes = list(set([item for
                       sublist in map(lambda x: x["p"].nodes, records)

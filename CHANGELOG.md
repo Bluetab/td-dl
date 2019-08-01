@@ -4,6 +4,7 @@
 
 ### Changed
 
+- [TD-2008] Remove top level condition from neo queries
 - [TD-2009] Changed group by system_external_id in cache
 
 ## [3.2.0] 2019-07-24
