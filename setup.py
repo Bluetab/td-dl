@@ -15,7 +15,7 @@ def get_requirements(key):
 
 setup(
     name='td_dl',
-    version='3.2.0',
+    version='3.3.0',
     description='Api for data lineage on neo4j',
     author='bluetab',
     author_email='bluetab@bluetab.net',
