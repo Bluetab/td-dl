@@ -1,6 +1,6 @@
 Fabric3==1.13.1.post1
 Flask==0.12.2
-Flask-Cors==3.0.2
+Flask-Cors==3.0.9
 Flask-HTTPAuth==3.2.3
 flasgger==0.9.0
 gunicorn==19.7.1
